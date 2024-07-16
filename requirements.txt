@@ -1,0 +1,7 @@
+numpy==1.26.4
+Flask==3.0.3
+Flask-Cors==3.0.3
+# whisper==1.16.0
+SpeechRecognition==3.10.4
+pyttsx3==2.90
+PyAudio==0.2.14

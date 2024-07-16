@@ -1,0 +1,213 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 부모 요소의 텍스트 색상을 상속 */
+}
+
+header {
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+#logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#navi ul, #login ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#navi ul li, #login ul li {
+    margin: 0 10px;
+}
+
+#menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+#avata {
+    padding-top: 150px;
+    background-color: #e9ecef;
+    padding: 20px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+#avatar-container {
+    position: relative;
+    text-align: center;
+}
+
+#avatar-img {
+    width: 60%;
+    border-radius: 50%;
+    margin: 20px auto;
+}
+
+#level-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#level, #level-no {
+    margin: 0 10px;
+    text-align: center;
+}
+
+#level {
+    font-weight: bold;
+}
+
+#chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+#chatting {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden; /* 가로 스크롤 숨기기 */
+    max-width: 100%; /* 부모 요소의 크기를 넘지 않도록 설정 */
+}
+
+#chatting-window {
+    flex: 300px;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden; /* 가로 스크롤 숨기기 */
+    display: none;
+    flex-direction: column-reverse;
+    max-width: 100%; /* 부모 요소의 크기를 넘지 않도록 설정 */
+}
+
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+#input-box {
+    width: 100%;
+    padding: 20px;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+}
+
+#user-input {
+    flex-grow: 1;
+    height: 25px;
+}
+
+#stream-checkbox {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+#input-button {
+    width: 20%;
+    height: 30px;
+    background-color: green;
+    color: white;
+    border: 0;
+    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    #navi ul, #login ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #f8f9fa;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #menu-toggle {
+        display: block;
+    }
+
+    #navi ul.active, #login ul.active {
+        display: flex;
+    }
+
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #chatting {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        overflow-x: hidden; /* 가로 스크롤 숨기기 */
+        display: flex;
+        flex-direction: column-reverse; /* Add this line */
+        max-width: 100%; /* 부모 요소의 크기를 넘지 않도록 설정 */
+    }
+
+    #chatting-window {
+        display: none;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    #chat-area {
+        position: absolute;
+        top: 120px; /* Header height */
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.3);
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+}
+
+@media (min-width: 769px) {
+    #chatting {
+        display: none;
+    }
+
+    #chatting-window {
+        display: flex;
+    }
+}

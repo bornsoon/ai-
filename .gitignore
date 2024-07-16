@@ -1,0 +1,17 @@
+## 파일
+*.env
+*.csv
+*.bin
+*.bak
+*.db
+*.sql
+*.gitignote
+# dbConfig.js
+
+## 폴더
+images/
+node_modules/
+bin/
+tests/
+uploads/
+# config/

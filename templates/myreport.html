@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiChat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="{{ url_for('main.index') }}">Ai영어친구</a></div>
+        <div id="navi">
+            <ul>
+                <li><a href="{{ url_for('main.chat') }}">영어대화</a></li>
+                <li><a href="{{ url_for('main.aitest') }}">평가해보기</a></li>
+                <li><a href="{{ url_for('main.myreport') }}">학습현황</a></li>
+            </ul>
+        </div>
+        <div id="login">
+            <ul>
+                <li>로그인</li>
+                <li>가입</li>
+            </ul>
+        </div>
+        <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    </header>
+    <div>
+        <h2> @ 학습 데이터 및 그래프</h2>
+
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/menu-toggle.js') }}"></script>
+</body>
+</html>

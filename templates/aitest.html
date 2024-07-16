@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiChat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="{{ url_for('main.index') }}">Ai영어친구</a></div>
+        <div id="navi">
+            <ul>
+                <li><a href="{{ url_for('main.chat') }}">영어대화</a></li>
+                <li><a href="{{ url_for('main.aitest') }}">평가해보기</a></li>
+                <li><a href="{{ url_for('main.myreport') }}">학습현황</a></li>
+            </ul>
+        </div>
+        <div id="login">
+            <ul>
+                <li>로그인</li>
+                <li>가입</li>
+            </ul>
+        </div>
+        <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    </header>
+
+    <div id="main-content">
+        <div id="avata">
+            <div id="avatar-container">
+                <div id="level-box">
+                    <div id="level">Level:</div>
+                    <div id="level-no">bronze5</div>
+                </div>
+                <img src="{{ url_for('static', filename='images/boy1.png') }}" alt="Avatar" id="avatar-img">
+            </div>
+        </div>
+
+        <div id="chat-area">
+            <h2>AiTest</h2>
+            <div id="chatting">
+                <div class="chat-message" id="user-role">
+                    <pre id="user-content">{{ user_text }}</pre>
+                </div>
+                <div class="chat-message" id="assistant-role">
+                    <pre id="assistant-content">{{ assistant_text }}</pre>
+                </div>
+            </div>
+            <div id="chatting-window">
+                <!-- 대화 내용 누적될 영역 -->
+            </div>
+            <div id="input-box">
+                <form id="chat-form" style="display: flex; width: 100%;">
+                    <label for="user-input" style="flex-grow: 1;"></label>
+                    <input type="text" id="user-input" name="user-input" style="flex-grow: 1;">
+                    <label for="stream-checkbox" style="margin-left: 10px;">Streaming:</label>
+                    <input type="checkbox" id="stream-checkbox" name="stream-checkbox" style="margin-right: 10px;">
+                    <input type="submit" value="입력" id="input-button">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/menu-toggle.js') }}"></script>
+</body>
+</html>

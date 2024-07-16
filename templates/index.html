@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+   
+    <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+    <title>AI 영어학습모델</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div id='logo'>
+        <img src="{{ url_for('static', filename='images/3dbird1.png') }}" width="80%">
+    </div>
+    <div id="intro">        
+        <h2> AI 영어학습모델 </h2>
+        <p> AI와 함께 영어공부를 시작하세요</p>
+        <div id='select'>
+            <div id="gostudy">
+                <a href="{{ url_for('main.chat') }}"> AI사용 </a>
+            </div>
+            <div id="gostudy">
+                <a href="{{ url_for('main.aitest') }}"> GPT사용 </a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
