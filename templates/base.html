@@ -1,18 +1,38 @@
+<!-- base.html 레이아웃  -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AiChat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
+    <!-- <script src="{{ url_for('static', filename='js/menu-toggle.js') }}"></script> -->
+    {% block head %}{% endblock %}
 </head>
 <body>
     <header>
-        {% block header %}{% endheader %}
+        {% include 'partials/header.html' %}
     </header>
-        {%% block content %}{% endcontent %}
-
-        {% block footer %}{% endfooter %}
-
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        {% include 'partials/footer.html' %}
+    </footer>
+    {% block scripts %}
+    
+    {% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('menu-toggle').addEventListener('click', function() {
+                document.querySelector('#navi').classList.toggle('active');
+                document.querySelector('#login').classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>

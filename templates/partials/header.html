@@ -1,9 +1,11 @@
-<div id="logo"><img src="{{ url_for('static', filename='images/logo2024.png') }}" alt="logo" id="logo-img">Ai영어친구</div>
+<!-- header.html -->
+<div id="logo"><a href="{{ url_for('main.index') }}">Ai영어친구</a></div>
+<button id="menu-toggle" aria-label="Toggle navigation">☰</button>
 <div id="navi">
     <ul>
         <li><a href="{{ url_for('main.chat') }}">영어대화</a></li>
-        <li>평가해보기</li>
-        <li>학습현황</li>
+        <li><a href="{{ url_for('main.aitest') }}">평가해보기</a></li>
+        <li><a href="{{ url_for('main.myreport') }}">학습현황</a></li>
     </ul>
 </div>
 <div id="login">
@@ -12,4 +14,3 @@
         <li>가입</li>
     </ul>
 </div>
-<button id="menu-toggle" aria-label="Toggle navigation">☰</button>

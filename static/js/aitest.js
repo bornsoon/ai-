@@ -9,10 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const popup = document.getElementById('popup');
     const layerBg = document.getElementById('layer_bg');
 
+    // 문자채팅창 노출여부 선택기능
     textWindowButton.addEventListener('click', function() {
         chatArea.style.display = (chatArea.style.display === 'none' || chatArea.style.display === '') ? 'block' : 'none';
     });
 
+    // 음성출력 설정 노출
     voiceSetButton.addEventListener('click', function() {
         layerBg.style.display = 'block';
     });
@@ -21,11 +23,14 @@ document.addEventListener('DOMContentLoaded', function() {
         layerBg.style.display = 'none';
     });
 
+    // 음성처리 기능
     document.getElementById('chat-form').onsubmit = async function(e) {
         e.preventDefault();
-        const userInput = document.getElementById('user-input').value.trim();
+
+        // 유저 질문 처리
+        let userInput = document.getElementById('user-input').value.trim();
         if (!userInput) {
-            alert('입력내용을 먼저 입력해 주세요.');
+            alert('Please enter some text before submitting.');
             return;
         }
 
@@ -42,6 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // 'chatting-window'에 동일한 사용자 메시지를 추가하여 누적
         const newUserMessageForWindow = newUserMessage.cloneNode(true);
         chattingWindow.appendChild(newUserMessageForWindow);
+
+        // 사전입력 프롬프트 문자
+        const preText = 'Based on the speaking evaluation of Pre-A1 Starters, give 10 points based on the use of vocabulary and words used, as well as a brief evaluation based on the use of @vocabulary and the use of @words. Please keep your entire reply within 200 characters.';
+        userInput = preText + userInput; // Modify the userInput with prepended text
+
 
         // AI 응답 처리
         try {
