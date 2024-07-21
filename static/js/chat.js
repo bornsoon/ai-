@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom(chattingWindow);
 
         // 사전입력 프롬프트 문자
-        // const preCharacter = '*You are a curious 16-year-old American teenager traveling. Please answer within 150 characters.*';
-        // const preDetail = '';
+        const preCharacter = '*You are a curious 16-year-old American teenager traveling. Please answer within 150 characters.*';
+        const preDetail = '';
         userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
         console.log("Modified userInput: ", userInput); // 콘솔 로그 추가
 
