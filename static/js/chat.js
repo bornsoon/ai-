@@ -1,3 +1,5 @@
+// chat.js
+
 document.addEventListener('DOMContentLoaded', function() {
     const voiceToggle = document.getElementById('voiceToggle');
     const chatting = document.getElementById('chatting');
@@ -9,10 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const popup = document.getElementById('popup');
     const layerBg = document.getElementById('layer_bg');
 
+    // 문자채팅창 노출여부 선택기능
     textWindowButton.addEventListener('click', function() {
         chatArea.style.display = (chatArea.style.display === 'none' || chatArea.style.display === '') ? 'block' : 'none';
     });
 
+    // 음성출력 설정 노출
     voiceSetButton.addEventListener('click', function() {
         layerBg.style.display = 'block';
     });
@@ -21,11 +25,19 @@ document.addEventListener('DOMContentLoaded', function() {
         layerBg.style.display = 'none';
     });
 
+    // 스크롤 하단으로 이동 함수
+    function scrollToBottom(element) {
+        element.scrollTop = element.scrollHeight;
+    }
+
+    // 음성처리 기능
     document.getElementById('chat-form').onsubmit = async function(e) {
         e.preventDefault();
-        const userInput = document.getElementById('user-input').value.trim();
+
+        // 유저 질문 처리
+        let userInput = document.getElementById('user-input').value.trim();
         if (!userInput) {
-            alert('입력내용을 먼저 입력해 주세요.');
+            alert('Please enter some text before submitting.');
             return;
         }
 
@@ -38,10 +50,31 @@ document.addEventListener('DOMContentLoaded', function() {
             <div id="role-user">나</div>
         `;
         chatting.appendChild(newUserMessage);
+        document.getElementById('user-input').value = ''; // 사용자 입력 필드 초기화
 
         // 'chatting-window'에 동일한 사용자 메시지를 추가하여 누적
         const newUserMessageForWindow = newUserMessage.cloneNode(true);
         chattingWindow.appendChild(newUserMessageForWindow);
+        scrollToBottom(chattingWindow);
+
+        // 사전입력 프롬프트 문자
+        // const preCharacter = '*You are a curious 16-year-old American teenager traveling. Please answer within 150 characters.*';
+        // const preDetail = '';
+        userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
+        console.log("Modified userInput: ", userInput); // 콘솔 로그 추가
+
+        // AI 응답 자리 임시메시지 추가
+        const placeholderMessage = document.createElement('div');
+        placeholderMessage.classList.add('chat-message', 'assistant-role');
+        placeholderMessage.innerHTML = `
+            <div id="role-assistant">Ai</div>
+            <div id="content-assistant">.....AI 가 생각 중....</div>
+        `;
+
+        chatting.appendChild(placeholderMessage); // `chatting` 요소에도 임시 메시지를 추가
+        const placeholderMessageForWindow = placeholderMessage.cloneNode(true);
+        chattingWindow.appendChild(placeholderMessageForWindow); // `chatting-window` 요소에도 임시 메시지를 추가
+        scrollToBottom(chattingWindow); // 채팅창 스크롤을 하단으로 이동
 
         // AI 응답 처리
         try {
@@ -57,25 +90,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const assistantMessage = data.messages.find(msg => msg.role === 'assistant');
 
             if (assistantMessage && assistantMessage.content) {
-                const newAssistantMessage = document.createElement('div');
-                newAssistantMessage.classList.add('chat-message', 'assistant-role');
-                newAssistantMessage.innerHTML = `
-                    <div id="role-assistant">Ai</div>
-                    <div id="content-assistant">${assistantMessage.content}</div>
-                `;
-                chatting.appendChild(newAssistantMessage);
+                placeholderMessage.querySelector('#content-assistant').textContent = assistantMessage.content;
+                placeholderMessageForWindow.querySelector('#content-assistant').textContent = assistantMessage.content;
 
-                // 'chatting-window'에 AI 응답을 추가하여 누적
-                const newAssistantMessageForWindow = newAssistantMessage.cloneNode(true);
-                chattingWindow.appendChild(newAssistantMessageForWindow);
-
-                if (voiceToggle.checked) {
+                if (voiceToggle && voiceToggle.checked) {
                     speak(assistantMessage.content);
                 }
             } else {
                 throw new Error('Unexpected response format');
             }
-            document.getElementById('user-input').value = ''; // 사용자 입력 필드 초기화
+            
         } catch (error) {
             console.error('Fetch error:', error);
             alert('Fetch error: ' + error.message);

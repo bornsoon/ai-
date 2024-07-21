@@ -1,3 +1,5 @@
+// aitest.js
+
 document.addEventListener('DOMContentLoaded', function() {
     const voiceToggle = document.getElementById('voiceToggle');
     const chatting = document.getElementById('chatting');
@@ -23,6 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
         layerBg.style.display = 'none';
     });
 
+    // 스크롤 하단으로 이동 함수
+    function scrollToBottom(element) {
+        element.scrollTop = element.scrollHeight;
+    }
+
     // 음성처리 기능
     document.getElementById('chat-form').onsubmit = async function(e) {
         e.preventDefault();
@@ -43,15 +50,31 @@ document.addEventListener('DOMContentLoaded', function() {
             <div id="role-user">나</div>
         `;
         chatting.appendChild(newUserMessage);
+        document.getElementById('user-input').value = ''; // 사용자 입력 필드 초기화
 
         // 'chatting-window'에 동일한 사용자 메시지를 추가하여 누적
         const newUserMessageForWindow = newUserMessage.cloneNode(true);
         chattingWindow.appendChild(newUserMessageForWindow);
+        scrollToBottom(chattingWindow);
 
         // 사전입력 프롬프트 문자
-        const preText = 'Based on the speaking evaluation of Pre-A1 Starters, give 10 points based on the use of vocabulary and words used, as well as a brief evaluation based on the use of @vocabulary and the use of @words. Please keep your entire reply within 200 characters.';
-        userInput = preText + userInput; // Modify the userInput with prepended text
+        const preCharacter = '*You are a middle school teacher. Evaluate it based on Pre-A1 Starters’ speaking evaluation.*';
+        const preDetail = '*Please answer in a dry sentence of less than 300 characters. The format is a simple 100-character evaluation + 10 points, @vocabulary: score @words: score at the end of the letter. *';
+        userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
+        console.log(userInput);
 
+        // AI 응답 자리 임시메시지 추가
+        const placeholderMessage = document.createElement('div');
+        placeholderMessage.classList.add('chat-message', 'assistant-role');
+        placeholderMessage.innerHTML = `
+            <div id="role-assistant">Ai</div>
+            <div id="content-assistant">.....AI 가 생각 중....</div>
+        `;
+
+        chatting.appendChild(placeholderMessage); // `chatting` 요소에도 임시 메시지를 추가
+        const placeholderMessageForWindow = placeholderMessage.cloneNode(true);
+        chattingWindow.appendChild(placeholderMessageForWindow); // `chatting-window` 요소에도 임시 메시지를 추가
+        scrollToBottom(chattingWindow); // 채팅창 스크롤을 하단으로 이동
 
         // AI 응답 처리
         try {
@@ -67,25 +90,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const assistantMessage = data.messages.find(msg => msg.role === 'assistant');
 
             if (assistantMessage && assistantMessage.content) {
-                const newAssistantMessage = document.createElement('div');
-                newAssistantMessage.classList.add('chat-message', 'assistant-role');
-                newAssistantMessage.innerHTML = `
-                    <div id="role-assistant">Ai</div>
-                    <div id="content-assistant">${assistantMessage.content}</div>
-                `;
-                chatting.appendChild(newAssistantMessage);
+                placeholderMessage.querySelector('#content-assistant').textContent = assistantMessage.content;
+                placeholderMessageForWindow.querySelector('#content-assistant').textContent = assistantMessage.content;
 
-                // 'chatting-window'에 AI 응답을 추가하여 누적
-                const newAssistantMessageForWindow = newAssistantMessage.cloneNode(true);
-                chattingWindow.appendChild(newAssistantMessageForWindow);
-
-                if (voiceToggle.checked) {
+                if (voiceToggle && voiceToggle.checked) {
                     speak(assistantMessage.content);
                 }
             } else {
                 throw new Error('Unexpected response format');
             }
-            document.getElementById('user-input').value = ''; // 사용자 입력 필드 초기화
+            
         } catch (error) {
             console.error('Fetch error:', error);
             alert('Fetch error: ' + error.message);
