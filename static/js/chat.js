@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom(chattingWindow);
 
         // 사전입력 프롬프트 문자
-        const preCharacter = '*You are traveling the world. Answer questions and ask questions. Answers must be limited to 100 characters.*';
+        const preCharacter = '*You are traveling the world. Answer questions and ask questions. Answers must be limited to 130 characters.*';
         const preDetail = '';
         userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
         console.log("Modified userInput: ", userInput); // 콘솔 로그 추가
