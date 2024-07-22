@@ -24,8 +24,14 @@ header {
     position: relative;
 }
 
+#logo-area {
+    width: 200px;
+    justify-items: left;
+}
+
 #logo-img {
     width: 80px;
+    display: none; /* 900px 이하일 때 숨기기 */
 }
 
 #logo {
@@ -80,8 +86,28 @@ header {
     }
 
     header {
-        flex-direction: row;
+        flex: 1;
+        padding: 20px;
+        display: flex;
         align-items: center;
         justify-content: space-between;
+        height: 50px;
+        background-color: transparent; /* 배경 투명 설정 */
+        position: fixed; /* 고정 위치로 설정 */
+        width: 100%; /* 전체 너비 설정 */
+        z-index: 10; /* z-index를 높여 본문 위에 오도록 설정 */
+    }
+
+    #logo-img {
+        width: 50px;
+        display: flex;
+    }
+
+    #logo {
+        display: none; /* 900px 이하일 때 숨기기 */
+    }
+
+    #content {
+        margin-top: 0px; /* 헤더 높이만큼 본문 아래로 내림 */
     }
 }

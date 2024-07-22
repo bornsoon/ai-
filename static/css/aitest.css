@@ -1,4 +1,4 @@
-/* aitest.css */
+/* chat.css */
 #avata {
     flex: 1;
     padding-top: 150px;
@@ -155,43 +155,85 @@ h2 {
 
 #voiceset {
     position: fixed;
-    width: 70px;
+    width: 20px;
     height: 20px;
     left: 0;
     top: 450px;
     transform: translateY(-50%);
     padding: 10px 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    margin-left: 10px;
+    background-color: #ffc400;
+    border-radius: 50%;
     cursor: pointer;
     text-align: center;
-    line-height: 30px;
+    line-height: 20px;
     z-index: 990;
 }
 
 #text-window {
     position: fixed;
-    width: 70px;
+    width: 20px;
     height: 20px;
     left: 0;
     top: 400px;
     transform: translateY(-50%);
     padding: 10px 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    margin-left: 10px;
+    background-color: #95b1ff;
+    border-radius: 50%;
     cursor: pointer;
     text-align: center;
-    line-height: 30px;
+    line-height: 20px;
     z-index: 990;
 }
 
+#listen {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    top: 500px;
+    transform: translateY(-50%);
+    padding: 10px 10px;
+    margin-left: 10px;
+    background-color: #bebebe;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    line-height: 20px;
+    z-index: 990;
+}
+
+#mic {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    top: 550px;
+    transform: translateY(-50%);
+    padding: 10px 10px;
+    margin-left: 10px;
+    background-color: #ffd6a1;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    line-height: 20px;
+    z-index: 990;
+}
+
+#mic-img {
+    width: 25px;
+    height: 25px;
+}
+
 @media (max-width: 900px) {
+    #avata {
+        padding-top: 60px;
+    }
     #chatting {
         flex: 1;
         padding: 20px;
-        margin-left: 120px;
+        margin-left: 100px;
         overflow-y: auto;
         overflow-x: hidden; /* 가로 스크롤 숨기기 */
         display: flex;

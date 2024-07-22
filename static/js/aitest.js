@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         placeholderMessage.classList.add('chat-message', 'assistant-role');
         placeholderMessage.innerHTML = `
             <div id="role-assistant">Ai</div>
-            <div id="content-assistant">.....AI 가 생각 중....</div>
+            <div id="content-assistant">.....AI 가 평가 중....</div>
         `;
 
         chatting.appendChild(placeholderMessage); // `chatting` 요소에도 임시 메시지를 추가
