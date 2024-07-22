@@ -153,16 +153,16 @@ h2 {
     max-width: 100%; /* 부모 요소의 크기를 넘지 않도록 설정 */
 }
 
-#voiceset {
+#text-window {
     position: fixed;
     width: 20px;
     height: 20px;
     left: 0;
-    top: 450px;
+    top: 300px;
     transform: translateY(-50%);
     padding: 10px 10px;
     margin-left: 10px;
-    background-color: #ffc400;
+    background-color: #95b1ff;
     border-radius: 50%;
     cursor: pointer;
     text-align: center;
@@ -170,16 +170,16 @@ h2 {
     z-index: 990;
 }
 
-#text-window {
+#voiceset {
     position: fixed;
     width: 20px;
     height: 20px;
     left: 0;
-    top: 400px;
+    top: 350px;
     transform: translateY(-50%);
     padding: 10px 10px;
     margin-left: 10px;
-    background-color: #95b1ff;
+    background-color: #ffc400;
     border-radius: 50%;
     cursor: pointer;
     text-align: center;
@@ -192,7 +192,7 @@ h2 {
     width: 20px;
     height: 20px;
     left: 0;
-    top: 500px;
+    top: 400px;
     transform: translateY(-50%);
     padding: 10px 10px;
     margin-left: 10px;
@@ -209,7 +209,7 @@ h2 {
     width: 20px;
     height: 20px;
     left: 0;
-    top: 550px;
+    top: 450px;
     transform: translateY(-50%);
     padding: 10px 10px;
     margin-left: 10px;
