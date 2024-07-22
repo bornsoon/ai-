@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom(chattingWindow);
 
         // 사전입력 프롬프트 문자
-        const preCharacter = '*You are a middle school teacher. Evaluate it based on Pre-A1 Starters’ speaking evaluation.*';
-        const preDetail = '*Please answer in a dry sentence of less than 300 characters. The format is a simple 100-character evaluation + 10 points, @vocabulary: score @words: score at the end of the letter. *';
+        const preCharacter = '*';
+        const preDetail = '*Answers must be limited to 130 characters.*';
         userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
         console.log(userInput);
 
