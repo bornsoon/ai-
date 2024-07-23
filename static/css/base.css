@@ -9,8 +9,8 @@ body {
 }
 
 a {
-    text-decoration: none; /* 기본 스타일 제거 */
-    color: inherit; /* 부모 요소의 색상을 상속 */
+    text-decoration: none;
+    color: inherit;
 }
 
 header {
@@ -25,8 +25,8 @@ header {
 }
 
 #logo-area {
-    width: 200px;
-    justify-items: left;
+    display: flex;
+    align-items: center;
 }
 
 #logo-img {
@@ -37,6 +37,11 @@ header {
 #logo {
     font-size: 24px;
     font-weight: bold;
+}
+
+#navi, #login {
+    display: flex;
+    align-items: center;
 }
 
 #navi ul, #login ul {
@@ -65,11 +70,40 @@ header {
 }
 
 @media (max-width: 900px) {
+    header {
+        height: 50px;
+        padding: 0 20px;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0);
+        position: fixed;
+        width: 100%;
+        z-index: 10;
+    }
+
+    #logo-area {
+        width: auto;
+    }
+
+    #logo-img {
+        width: 50px;
+        display: block;
+    }
+
+    #logo {
+        display: none;
+    }
+
+    #menu-toggle {
+        display: block;
+    }
+
     #navi, #login {
         display: none;
         flex-direction: column;
+        align-items: center;
         position: absolute;
-        top: 100%;
+        top: 50px;
         left: 0;
         background-color: #f8f9fa;
         width: 100%;
@@ -77,37 +111,21 @@ header {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    #menu-toggle {
-        display: block;
-    }
-
     #navi.active, #login.active {
-        display: flex !important;
+        display: flex;
     }
 
-    header {
-        flex: 1;
-        padding: 20px;
-        display: flex;
+    #navi ul, #login ul {
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        height: 50px;
-        background-color: transparent; /* 배경 투명 설정 */
-        position: fixed; /* 고정 위치로 설정 */
-        width: 100%; /* 전체 너비 설정 */
-        z-index: 10; /* z-index를 높여 본문 위에 오도록 설정 */
+        width: 100%;
     }
 
-    #logo-img {
-        width: 50px;
-        display: flex;
-    }
-
-    #logo {
-        display: none; /* 900px 이하일 때 숨기기 */
+    #navi ul li, #login ul li {
+        margin: 10px 0;
     }
 
     #content {
-        margin-top: 0px; /* 헤더 높이만큼 본문 아래로 내림 */
+        margin-top: 0px;
     }
 }

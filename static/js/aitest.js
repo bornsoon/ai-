@@ -1,4 +1,4 @@
-// aitest.js
+// chat.js
 
 document.addEventListener('DOMContentLoaded', function() {
     const voiceToggle = document.getElementById('voiceToggle');
@@ -58,10 +58,10 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom(chattingWindow);
 
         // 사전입력 프롬프트 문자
-        const preCharacter = '*';
-        const preDetail = '*Answers must be limited to 130 characters.*';
+        const preCharacter = '*Answers must be limited to 300 characters.*';
+        const preDetail = '';
         userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
-        console.log(userInput);
+        console.log("Modified userInput: ", userInput); // 콘솔 로그 추가
 
         // AI 응답 자리 임시메시지 추가
         const placeholderMessage = document.createElement('div');

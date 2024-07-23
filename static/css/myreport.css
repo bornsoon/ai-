@@ -1,0 +1,71 @@
+/* myreport.css */
+#avata {
+    flex: 1;
+    padding-top: 150px;
+    background-color: #e9ecef;
+    padding: 20px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+#avatar-container {
+    position: relative;
+    text-align: center;
+}
+
+#level-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#level, #level-no {
+    margin: 0 10px;
+    text-align: center;
+}
+
+#level {
+    font-weight: bold;
+}
+
+
+
+@media (max-width: 900px) {
+    #avata {
+        padding-top: 60px;
+    }
+    #chatting {
+        flex: 1;
+        padding: 20px;
+        margin-left: 60px;
+        overflow-y: auto;
+        overflow-x: hidden; /* 가로 스크롤 숨기기 */
+        display: flex;
+        height: calc(100vh - 330px);
+        flex-direction: column-reverse;
+        max-width: 100%; /* 부모 요소의 크기를 넘지 않도록 설정 */
+    }
+
+    #chatting-window {
+        display: none;
+        background-color: rgba(255, 255, 255, 0.3);
+        max-width: 100%; /* 부모 요소의 크기를 넘지 않도록 설정 */
+    }
+
+    #chat-area {
+        position: absolute;
+        top: 120px; /* Header height */
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 150px);
+        width: 100%;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    #avatar-img {
+        width: 60%;
+        max-width: 500px; /* 원하는 최대 크기로 설정 */
+        min-width: 300px; /* 원하는 최대 크기로 설정 */
+    }
+}

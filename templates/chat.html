@@ -6,15 +6,18 @@
 {% block head %}
 <link href="{{ url_for('static', filename='css/chat.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/popup.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/listen.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 <div id="voiceset">S</div>
 <div id="text-window">M</div>
-<div id="listen">L</div>
-<div id="mic">
-    <img src="{{ url_for('static', filename='images/mic1.png') }}" alt="mic" id="mic-img">
-</div>
+<div id="listen" onclick="openSettings()">L</div>
+<div id="mic" onclick="toggleRecognition()" 
+     data-mic-on="{{ url_for('static', filename='images/mic-on.png') }}"
+     data-mic-off="{{ url_for('static', filename='images/mic-off.png') }}">
+    <img src="{{ url_for('static', filename='images/mic-on.png') }}" alt="mic" id="mic-img">
+</div>  
 <div id="avata">
     <div id="avatar-container">
         <div id="level-box">
@@ -46,6 +49,7 @@
         </form>
     </div>
 </div>
+{% include 'listen.html' %}
 
 {% include 'popup.html' %}
 {% endblock %}
@@ -53,4 +57,5 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 <script src="{{ url_for('static', filename='js/popup-voice.js') }}"></script>
+<script src="{{ url_for('static', filename='js/listen.js')}}"></script>
 {% endblock %}
