@@ -8,8 +8,8 @@
 # dbConfig.js
 
 ## 폴더
-# images/
-__pycache__
+images/
+__pycache__/
 node_modules/
 bin/
 tests/
