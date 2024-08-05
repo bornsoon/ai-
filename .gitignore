@@ -14,4 +14,5 @@ node_modules/
 bin/
 tests/
 uploads/
+logs/
 # config/
