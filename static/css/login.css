@@ -1,21 +1,31 @@
-/* myreport.css */
+/* login.css */
 #avata {
     flex: 1;
-    padding-top: 150px;
     background-color: #e9ecef;
     padding: 20px;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     position: relative;
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;     /* 세로 중앙 정렬 */
+    height: 100vh;           /* 전체 뷰 높이를 차지하도록 설정 */
 }
 
-#avatar-container {
+#body-container {
     position: relative;
     text-align: center;
+    width: 500px;
+}
+
+#login-div {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #login {
-    width: 500px;
-    height: 150px;
+    width: 300px;
     padding: 20px;
     border: 1px solid gray;
     border-radius: 5px;
@@ -35,14 +45,13 @@
 }
 
 #label {
-    width: 150px;
+    width: 100px;
     font-weight: bold;
-    text-align: left;
     text-align: center;
 }
 
-#email, #password {
-    width: calc(100% - 150px); /* 라벨과의 간격을 위해 계산된 너비 */
+#userid, #password {
+    width: calc(100% - 100px); /* 라벨과의 간격을 위해 계산된 너비 */
     height: 30px;
     padding: 5px;
     border: 1px solid #ccc;
@@ -63,6 +72,15 @@
 
 #login-button:hover {
     background-color: darkgreen;
+}
+
+#social-login {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+    height: 30px;
 }
 
 

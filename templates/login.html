@@ -1,0 +1,36 @@
+<!-- login.html 화면 -->
+{% extends "base.html" %}
+
+{% block title %}Ai 영어친구{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="avata">
+    <div id="login-div">
+        <div id="login">
+            <form action="{{ url_for('api.api_login') }}" method="post">
+                <div class="form-group">
+                    <div id="label">아 이 디</div>
+                    <input type="text" id="userid" name="userid" required>
+                </div>
+                <div class="form-group">
+                    <div id="label">패스워드</div>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" id="login-button">Login</button>
+            </form>
+            <div id="social-login">
+                <span id="social-kakao">[ Kakao ] </span>
+                <span id="social-kakao">[ Naver ] </span>
+                <span id="social-kakao">[ Google ] </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

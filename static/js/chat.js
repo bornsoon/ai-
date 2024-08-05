@@ -81,7 +81,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch('/api/aiChat', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({model: "llama3", messages: [{role: "user", content: userInput}]})
+                body: JSON.stringify({
+                    model: "llama3",
+                    messages: [{role: "user", content: userInput}],
+                    menu: 'chat'  // 메뉴 정보를 포함하여 전송
+                })
             });
 
             if (!response.ok) throw new Error('서버 오류. 다시 시도해 주세요.');

@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom(chattingWindow);
 
         // 사전입력 프롬프트 문자
-        const preCharacter = '*Answers must be limited to 300 characters.*';
+        const preCharacter = '*Answers must be limited to 130 characters.*';
         const preDetail = '';
         userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
         console.log("Modified userInput: ", userInput); // 콘솔 로그 추가
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         placeholderMessage.classList.add('chat-message', 'assistant-role');
         placeholderMessage.innerHTML = `
             <div id="role-assistant">Ai</div>
-            <div id="content-assistant">.....AI 가 평가 중....</div>
+            <div id="content-assistant">.....AI 가 생각 중....</div>
         `;
 
         chatting.appendChild(placeholderMessage); // `chatting` 요소에도 임시 메시지를 추가
@@ -81,7 +81,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch('/api/aiChat', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({model: "llama3", messages: [{role: "user", content: userInput}]})
+                body: JSON.stringify({
+                    model: "llama3",
+                    messages: [{role: "user", content: userInput}],
+                    menu: 'aitest'  // 메뉴 정보를 포함하여 전송
+                })
             });
 
             if (!response.ok) throw new Error('서버 오류. 다시 시도해 주세요.');
