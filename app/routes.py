@@ -21,22 +21,15 @@ def index():
 @main_bp.route('/chat')
 def chat():
     user = session.get('user')
-    if user:
-        return render_template('chat.html')
-    else:
-        session['next'] = request.url
-        flash('로그인이 필요합니다.', 'danger')
-        return redirect(url_for('main.login'))
+    res_text = session.get('res_text', '')
+    return render_template('chat.html')
 
 @main_bp.route('/aitest')
 def aitest():
     user = session.get('user')
-    if user:
-        return render_template('aitest.html')
-    else:
-        session['next'] = request.url
-        flash('로그인이 필요합니다.', 'danger')
-        return redirect(url_for('main.login'))
+    res_text = session.get('res_text', '')
+    return render_template('aitest.html')
+
 
 @main_bp.route('/myreport')
 def myreport():
