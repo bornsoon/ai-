@@ -8,7 +8,7 @@
 # dbConfig.js
 
 ## 폴더
-images/
+# images/
 __pycache__/
 node_modules/
 bin/
