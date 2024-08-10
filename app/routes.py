@@ -1,4 +1,4 @@
-# routes.py
+# /app/routes.py
 from flask import Blueprint, request, jsonify, send_file, render_template, session, redirect, url_for, flash
 from app.ai_chat import get_response
 from app.audio_processing import transcribe_audio

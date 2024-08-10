@@ -1,5 +1,4 @@
-// chat.js
-
+// aitest.js
 document.addEventListener('DOMContentLoaded', function() {
     const voiceToggle = document.getElementById('voiceToggle');
     const chatting = document.getElementById('chatting');
@@ -57,12 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
         chattingWindow.appendChild(newUserMessageForWindow);
         scrollToBottom(chattingWindow);
 
-        // 사전입력 프롬프트 문자
-        const preCharacter = '*Answers must be limited to 130 characters.*';
-        const preDetail = '';
-        userInput = preCharacter + preDetail + userInput; // Modify the userInput with prepended text
-        console.log("Modified userInput: ", userInput); // 콘솔 로그 추가
-
         // AI 응답 자리 임시메시지 추가
         const placeholderMessage = document.createElement('div');
         placeholderMessage.classList.add('chat-message', 'assistant-role');
@@ -84,26 +77,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({
                     model: "llama3",
                     messages: [{role: "user", content: userInput}],
-                    menu: 'aitest'  // 메뉴 정보를 포함하여 전송
+                    menu: 'aitest'  // aitest 메뉴 정보를 포함하여 전송
                 })
             });
 
             if (!response.ok) throw new Error('서버 오류. 다시 시도해 주세요.');
 
             const data = await response.json();
-            const assistantMessage = data.messages.find(msg => msg.role === 'assistant');
 
-            if (assistantMessage && assistantMessage.content) {
-                placeholderMessage.querySelector('#content-assistant').textContent = assistantMessage.content;
-                placeholderMessageForWindow.querySelector('#content-assistant').textContent = assistantMessage.content;
+            // combinedMessage 그대로 출력
+            const combinedMessage = data.content;
 
-                if (voiceToggle && voiceToggle.checked) {
-                    speak(assistantMessage.content);
-                }
-            } else {
-                throw new Error('Unexpected response format');
+            placeholderMessage.querySelector('#content-assistant').textContent = combinedMessage;
+            placeholderMessageForWindow.querySelector('#content-assistant').textContent = combinedMessage;
+
+            if (voiceToggle && voiceToggle.checked) {
+                speak(combinedMessage);
             }
-            
         } catch (error) {
             console.error('Fetch error:', error);
             alert('Fetch error: ' + error.message);

@@ -1,11 +1,18 @@
+# /app/__init__.py 
+
 from flask import Flask
 from flask_cors import CORS
+from flask_migrate import Migrate
 from dotenv import load_dotenv
 from app.routes import main_bp, api_bp
+from app.models import db
 import os
 from datetime import timedelta
 import logging
 from logging.handlers import RotatingFileHandler
+
+# Import Config from project root
+from dbconfig import Config
 
 def create_app():
     app = Flask(__name__, template_folder='../templates', 
@@ -21,7 +28,11 @@ def create_app():
     print(f"Loaded SECRET_KEY: {SECRET_KEY}")  # 개발 중에만 사용, 배포 시 제거
 
     app.secret_key = SECRET_KEY
+    app.config.from_object(Config)
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+
+    db.init_app(app)
+    Migrate(app, db)
 
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp)

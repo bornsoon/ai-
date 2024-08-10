@@ -1,11 +1,77 @@
-# ai_chat.py
 from flask import request, jsonify, session, current_app as app
-import ollama
 from ollama import Client, ResponseError, RequestError
-from app.config import menu_settings, default_settings  # 설정 파일에서 AI 설정값 호출
+from app.aiconfig import menu_settings, default_settings
+from app.models import db, AIChatTest
+from datetime import datetime
+import uuid
+import json
 
 client = Client()
 settings = default_settings.copy()
+
+def save_ai_test_result(user_id, topic_id, fluency, grammar, vocabulary, content, simple_evaluation):
+    if not user_id:
+        user_id = "test_user"
+        
+    chat_test = AIChatTest(
+        chatTest_id=str(uuid.uuid4()),
+        user_id=user_id,
+        chatDate=datetime.utcnow(),
+        topic_id=topic_id,
+        fluency=fluency,
+        grammar=grammar,
+        vocabulary=vocabulary,
+        content=content,
+        simpleEvaluation=simple_evaluation
+    )
+    db.session.add(chat_test)
+    db.session.commit()
+    app.logger.info("AIChatTest 저장됨")
+
+def extract_json_from_response(ai_response_content):
+    """
+    AI 응답에서 JSON 형식의 텍스트만 추출합니다.
+    :param ai_response_content: AI 응답의 본문 (문자열)
+    :return: JSON 문자열
+    """
+    try:
+        start_index = ai_response_content.find("{")
+        end_index = ai_response_content.rfind("}") + 1
+        json_content = ai_response_content[start_index:end_index]
+        return json_content
+    except ValueError as e:
+        app.logger.error(f"Failed to extract JSON from AI response: {str(e)}")
+        raise ValueError("AI 응답에서 JSON을 추출하는 중 문제가 발생했습니다.")
+
+def parse_ai_response(ai_response_content):
+    try:
+        json_content = extract_json_from_response(ai_response_content)
+        ai_response = json.loads(json_content)
+        
+        fluency = ai_response.get('Fluency', 0)
+        grammar = ai_response.get('Grammar', 0)
+        vocabulary = ai_response.get('Vocabulary', 0)
+        content = ai_response.get('Content', 0)
+        simple_evaluation = ai_response.get('simpleEvaluation', "You're doing great.")
+        question = ai_response.get('question', 'If you want the next question, please say “Please next question”')
+
+        return fluency, grammar, vocabulary, content, simple_evaluation, question
+
+    except (json.JSONDecodeError, ValueError) as e:
+        app.logger.error(f"Failed to parse AI response: {str(e)}")
+        raise ValueError("AI 응답을 파싱하는 중 문제가 발생했습니다.")
+
+def handle_aitest_response(response, user_id, topic_id):
+    ai_response_content = response["message"]["content"]
+    app.logger.info(f"AI response content: {ai_response_content}")
+
+    fluency, grammar, vocabulary, content, simple_evaluation, question = parse_ai_response(ai_response_content)
+
+    save_ai_test_result(user_id, topic_id, fluency, grammar, vocabulary, content, simple_evaluation)
+
+    combined_message = "{} {}".format(simple_evaluation, question)
+
+    return combined_message
 
 def apply_settings(menu):
     if menu in menu_settings:
@@ -14,38 +80,29 @@ def apply_settings(menu):
         settings.update(default_settings)
 
 def save_message(role, content):
-    """사용자의 대화 메시지를 세션에 저장"""
     if 'messages' not in session:
         session['messages'] = []
     session['messages'].append({"role": role, "content": content})
-    app.logger.info(f"Updated session messages: {session['messages']}")
-    if settings["context_size"] is not None and settings["context_size"] > 0:
+    
+    if settings.get("context_size") is not None and settings["context_size"] > 0:
         session['messages'] = session['messages'][-settings["context_size"]:]
-    elif settings["context_size"] == 0:
+    elif settings.get("context_size") == 0:
         session['messages'] = []
 
 def get_response():
     data = request.json
-    menu = data.get('menu', 'default')  # 요청에서 메뉴 정보를 가져옴
+    menu = data.get('menu', 'default')
     apply_settings(menu)
 
-    app.logger.info('Received messages: %s', data.get("messages", []))
     user_message = data["messages"][-1]["content"]
-    app.logger.info('User input message: %s', user_message)
 
     try:
         stream = data.get("stream", False)
 
-        # 이전 대화의 맥락을 설정된 개수만큼 포함
         if 'messages' in session and settings["context_size"] != 0:
             context_messages = session['messages'] + data["messages"]
         else:
             context_messages = data["messages"]
-
-        app.logger.info(f"Using settings: {settings}")
-        app.logger.info("Accumulated conversation messages:")
-        for msg in context_messages:
-            app.logger.info(f"{msg['role']}: {msg['content']}")
 
         response = client.chat(
             model="llama3",
@@ -59,37 +116,22 @@ def get_response():
             }
         )
 
-        if stream:
-            is_first_message = True
-            for res in response:
-                if 'message' in res and 'content' in res['message']:
-                    if is_first_message:
-                        save_message("assistant", res["message"]["content"])
-                        data["messages"].append({"role": "assistant", "content": res["message"]["content"]})
-                        is_first_message = False
-                    else:
-                        data["messages"][-1]["content"] += ' ' + res["message"]["content"]
-                        session['messages'][-1]["content"] += ' ' + res["message"]["content"]
-        else:
+        if menu == 'aitest':
+            user_id = session.get('user')
+            topic_id = data.get('topic_id')
+
+            combined_message = handle_aitest_response(response, user_id, topic_id)
+            return jsonify({"content": combined_message})
+
+        elif menu == 'chat':
             if 'message' in response and 'content' in response['message']:
                 save_message("assistant", response["message"]["content"])
-                data["messages"].append({"role": "assistant", "content": response["message"]["content"]})
-            else:
-                raise ValueError("Unexpected response format")
+                return jsonify({"content": response["message"]["content"]})
 
-        save_message("user", user_message)
-
-        for message in data["messages"]:
-            if message["role"] == "assistant":
-                message["content"] = '.\n'.join(message["content"].split('.'))
-
-        app.logger.info('API response: %s', response)
-        return jsonify(data)
+        return jsonify(response)
     except (RequestError, ResponseError, ValueError) as e:
-        app.logger.error('Error: %s', str(e))
+        app.logger.error(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
-# 설정 함수들
 
 def set_temperature(temperature: float):
     settings["temperature"] = temperature
