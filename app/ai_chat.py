@@ -1,77 +1,15 @@
+# ai_chat.py 
+import json
+import re
 from flask import request, jsonify, session, current_app as app
 from ollama import Client, ResponseError, RequestError
 from app.aiconfig import menu_settings, default_settings
 from app.models import db, AIChatTest
 from datetime import datetime
 import uuid
-import json
 
 client = Client()
 settings = default_settings.copy()
-
-def save_ai_test_result(user_id, topic_id, fluency, grammar, vocabulary, content, simple_evaluation):
-    if not user_id:
-        user_id = "test_user"
-        
-    chat_test = AIChatTest(
-        chatTest_id=str(uuid.uuid4()),
-        user_id=user_id,
-        chatDate=datetime.utcnow(),
-        topic_id=topic_id,
-        fluency=fluency,
-        grammar=grammar,
-        vocabulary=vocabulary,
-        content=content,
-        simpleEvaluation=simple_evaluation
-    )
-    db.session.add(chat_test)
-    db.session.commit()
-    app.logger.info("AIChatTest 저장됨")
-
-def extract_json_from_response(ai_response_content):
-    """
-    AI 응답에서 JSON 형식의 텍스트만 추출합니다.
-    :param ai_response_content: AI 응답의 본문 (문자열)
-    :return: JSON 문자열
-    """
-    try:
-        start_index = ai_response_content.find("{")
-        end_index = ai_response_content.rfind("}") + 1
-        json_content = ai_response_content[start_index:end_index]
-        return json_content
-    except ValueError as e:
-        app.logger.error(f"Failed to extract JSON from AI response: {str(e)}")
-        raise ValueError("AI 응답에서 JSON을 추출하는 중 문제가 발생했습니다.")
-
-def parse_ai_response(ai_response_content):
-    try:
-        json_content = extract_json_from_response(ai_response_content)
-        ai_response = json.loads(json_content)
-        
-        fluency = ai_response.get('Fluency', 0)
-        grammar = ai_response.get('Grammar', 0)
-        vocabulary = ai_response.get('Vocabulary', 0)
-        content = ai_response.get('Content', 0)
-        simple_evaluation = ai_response.get('simpleEvaluation', "You're doing great.")
-        question = ai_response.get('question', 'If you want the next question, please say “Please next question”')
-
-        return fluency, grammar, vocabulary, content, simple_evaluation, question
-
-    except (json.JSONDecodeError, ValueError) as e:
-        app.logger.error(f"Failed to parse AI response: {str(e)}")
-        raise ValueError("AI 응답을 파싱하는 중 문제가 발생했습니다.")
-
-def handle_aitest_response(response, user_id, topic_id):
-    ai_response_content = response["message"]["content"]
-    app.logger.info(f"AI response content: {ai_response_content}")
-
-    fluency, grammar, vocabulary, content, simple_evaluation, question = parse_ai_response(ai_response_content)
-
-    save_ai_test_result(user_id, topic_id, fluency, grammar, vocabulary, content, simple_evaluation)
-
-    combined_message = "{} {}".format(simple_evaluation, question)
-
-    return combined_message
 
 def apply_settings(menu):
     if menu in menu_settings:
@@ -89,9 +27,83 @@ def save_message(role, content):
     elif settings.get("context_size") == 0:
         session['messages'] = []
 
+def save_ai_test_result(user_id, topic_id, fluency, grammar, vocabulary, content, simple_evaluation):
+    print(f"Saving AI test result - User ID: {user_id}, Topic ID: {topic_id}, Fluency: {fluency}, Grammar: {grammar}, Vocabulary: {vocabulary}, Content: {content}, Evaluation: {simple_evaluation}")
+
+    if not user_id:
+        user_id = "test_user"
+
+    chat_test = AIChatTest(
+        chatTest_id=str(uuid.uuid4()),
+        user_id=user_id,
+        chatDate=datetime.utcnow(),
+        topic_id=topic_id,
+        fluency=fluency,
+        grammar=grammar,
+        vocabulary=vocabulary,
+        content=content,
+        simpleEvaluation=simple_evaluation
+    )
+    db.session.add(chat_test)
+    db.session.commit()
+    app.logger.info("AIChatTest 저장됨")
+
+def parse_ai_response(ai_response_content):
+    try:
+        print(f"Parsing AI response: {ai_response_content}")
+
+        # 여러 줄에 걸친 JSON 형식 데이터를 추출하는 정규식
+        match = re.search(r'\{[\s\S]*\}', ai_response_content)
+        if match:
+            json_content = match.group(0)
+            print(f"Extracted JSON content: {json_content}")
+
+            # JSON 문자열을 파싱
+            ai_response = json.loads(json_content)
+            print(f"Parsed AI response: {ai_response}")
+
+            # 각 항목별 기본값 설정
+            fluency = ai_response.get('fluency', 0)
+            grammar = ai_response.get('grammar', 0)
+            vocabulary = ai_response.get('vocabulary', 0)
+            content = ai_response.get('content', 0)
+            simple_evaluation = ai_response.get('simpleEvaluation', "You're doing great.")
+            question = ai_response.get('question', 'If you want the next question, please say “Please next question”')
+
+            return fluency, grammar, vocabulary, content, simple_evaluation, question
+        else:
+            raise ValueError("No valid JSON content found in AI response")
+
+    except (json.JSONDecodeError, ValueError, KeyError, AttributeError) as e:
+        app.logger.error(f"Failed to parse AI response: {str(e)}")
+        raise ValueError("AI 응답을 파싱하는 중 문제가 발생했습니다.")
+
+def handle_aitest_response(response, user_id, topic_id):
+    ai_response_content = response["message"]["content"]
+    print(f"Handling AI test response: {ai_response_content}")
+
+    fluency, grammar, vocabulary, content, simple_evaluation, question = parse_ai_response(ai_response_content)
+
+    print(f"Fluency: {fluency}")
+    print(f"Grammar: {grammar}")
+    print(f"Vocabulary: {vocabulary}")
+    print(f"Content: {content}")
+    print(f"Simple Evaluation: {simple_evaluation}")
+    print(f"Question: {question}")
+
+    save_ai_test_result(user_id, topic_id, fluency, grammar, vocabulary, content, simple_evaluation)
+
+    combined_message = "{} {}".format(simple_evaluation, question)
+    print(f"Combined message: {combined_message}")
+
+    return combined_message
+
 def get_response():
     data = request.json
     menu = data.get('menu', 'default')
+    
+    print(f"Received request data: {data}")
+    
     apply_settings(menu)
 
     user_message = data["messages"][-1]["content"]
@@ -104,6 +116,8 @@ def get_response():
         else:
             context_messages = data["messages"]
 
+        print(f"Context messages: {context_messages}")
+
         response = client.chat(
             model="llama3",
             messages=context_messages,
@@ -115,6 +129,8 @@ def get_response():
                 "top_p": settings["top_p"]
             }
         )
+
+        print(f"AI response: {response}")
 
         if menu == 'aitest':
             user_id = session.get('user')

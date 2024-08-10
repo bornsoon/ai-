@@ -45,8 +45,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const newUserMessage = document.createElement('div');
         newUserMessage.classList.add('chat-message', 'user-role');
         newUserMessage.innerHTML = `
-            <div id="content-user">${userInput}</div>
-            <div id="role-user">나</div>
+            <div>
+                <pre class="content-user">${userInput}</pre>
+                <div id="role-user">나</div>
+            </div>
         `;
         chatting.appendChild(newUserMessage);
         document.getElementById('user-input').value = ''; // 사용자 입력 필드 초기화
@@ -60,13 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const placeholderMessage = document.createElement('div');
         placeholderMessage.classList.add('chat-message', 'assistant-role');
         placeholderMessage.innerHTML = `
-            <div id="role-assistant">Ai</div>
-            <div id="content-assistant">.....AI 가 생각 중....</div>
+            <div>
+                <div id="role-assistant">Ai</div>
+                <pre class="content-assistant">.....AI 가 생각 중....</pre>
+            </div>
         `;
 
-        chatting.appendChild(placeholderMessage); // `chatting` 요소에도 임시 메시지를 추가
+        chatting.appendChild(placeholderMessage); // chatting 요소에도 임시 메시지를 추가
         const placeholderMessageForWindow = placeholderMessage.cloneNode(true);
-        chattingWindow.appendChild(placeholderMessageForWindow); // `chatting-window` 요소에도 임시 메시지를 추가
+        chattingWindow.appendChild(placeholderMessageForWindow); // chatting-window 요소에도 임시 메시지를 추가
         scrollToBottom(chattingWindow); // 채팅창 스크롤을 하단으로 이동
 
         // AI 응답 처리
@@ -88,8 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // combinedMessage 그대로 출력
             const combinedMessage = data.content;
 
-            placeholderMessage.querySelector('#content-assistant').textContent = combinedMessage;
-            placeholderMessageForWindow.querySelector('#content-assistant').textContent = combinedMessage;
+            placeholderMessage.querySelector('.content-assistant').textContent = combinedMessage;
+            placeholderMessageForWindow.querySelector('.content-assistant').textContent = combinedMessage;
 
             if (voiceToggle && voiceToggle.checked) {
                 speak(combinedMessage);
