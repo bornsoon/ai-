@@ -80,8 +80,11 @@ def parse_ai_response(ai_response_content):
     try:
         print(f"Parsing AI response: {ai_response_content}")
 
+        # 특수 문자 제거 및 공백 정리
+        clean_response = re.sub(r'[\u200B-\u200D\uFEFF]', '', ai_response_content).strip()
+        
         # Extract the JSON content using a regular expression
-        match = re.search(r'\{[\s\S]*\}', ai_response_content)
+        match = re.search(r'\{[\s\S]*\}', clean_response)
         if match:
             json_content = match.group(0)
             print(f"Extracted JSON content: {json_content}")
@@ -109,7 +112,6 @@ def parse_ai_response(ai_response_content):
     except (json.JSONDecodeError, ValueError, KeyError, AttributeError) as e:
         app.logger.error(f"Failed to parse AI response: {str(e)}")
         raise ValueError("An error occurred while parsing the AI response.")
-
 
 def handle_aitest_response(response, user_id, topic_id):
     ai_response_content = response["message"]["content"]
@@ -184,10 +186,13 @@ def get_response():
                 save_message("assistant", response["message"]["content"])
                 return jsonify({"content": response["message"]["content"]})
 
-        return jsonify(response)
+        # 응답이 예상되지 않은 경우에도 일관된 형식으로 반환
+        return jsonify({"content": response.get("message", {}).get("content", ""), "error": None})
     except (RequestError, ResponseError, ValueError) as e:
         app.logger.error(f"Error: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+        # 오류 시에도 일관된 형식으로 JSON 응답 반환
+        return jsonify({"content": "", "error": str(e)}), 500
+
 
 def set_temperature(temperature: float):
     settings["temperature"] = temperature

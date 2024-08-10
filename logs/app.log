@@ -22,3 +22,10 @@
 [parameters: {'chatTest_id': '438a9236-20ac-446f-b233-ba9d4cb5f959', 'user_id': 'cba1234', 'chatDate': datetime.datetime(2024, 8, 10, 9, 58, 1, 491219), 'topic_id': '1', 'fluency': 7, 'grammar': 8, 'vocabulary': 6, 'content': 5, 'simpleEvaluation': 'Good fluency and grammar, but vocabulary could be more varied.'}]
 (Background on this error at: https://sqlalche.me/e/20/gkpj) [in C:\project\sesac\aiFriend\app\ai_chat.py:76]
 2024-08-10 18:58:01,506 ERROR: Failed to save the test result to the database, but proceeding to send the response. [in C:\project\sesac\aiFriend\app\ai_chat.py:130]
+2024-08-10 23:40:14,231 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
+2024-08-10 23:55:21,271 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
+2024-08-11 00:01:46,204 ERROR: Failed to save AI test result: (pymysql.err.IntegrityError) (1452, 'Cannot add or update a child row: a foreign key constraint fails (`aifriend`.`ai_chat_test`, CONSTRAINT `ai_chat_test_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`))')
+[SQL: INSERT INTO ai_chat_test (`chatTest_id`, user_id, `chatDate`, topic_id, fluency, grammar, vocabulary, content, `simpleEvaluation`) VALUES (%(chatTest_id)s, %(user_id)s, %(chatDate)s, %(topic_id)s, %(fluency)s, %(grammar)s, %(vocabulary)s, %(content)s, %(simpleEvaluation)s)]
+[parameters: {'chatTest_id': 'f3a3f3ec-391e-4841-8794-7ebbc64d8ecc', 'user_id': 'test_user', 'chatDate': datetime.datetime(2024, 8, 10, 15, 1, 46, 91445), 'topic_id': '1', 'fluency': 7, 'grammar': 8, 'vocabulary': 9, 'content': 8, 'simpleEvaluation': 'Well-structured and clear, with a good flow of ideas.'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) [in C:\project\sesac\aiFriend\app\ai_chat.py:76]
+2024-08-11 00:01:46,206 ERROR: Failed to save the test result to the database, but proceeding to send the response. [in C:\project\sesac\aiFriend\app\ai_chat.py:132]
