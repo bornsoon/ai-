@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
         newUserMessage.classList.add('chat-message', 'user-role');
         newUserMessage.innerHTML = `
             <div>
-                <pre class="content-user">${userInput}</pre>
                 <div id="role-user">나</div>
+                <pre class="content-user">${userInput}</pre>
             </div>
         `;
         chatting.appendChild(newUserMessage);

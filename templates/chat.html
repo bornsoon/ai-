@@ -40,6 +40,12 @@
     </div>
     <div id="chatting-window">
         <!-- 대화 내용 누적될 영역 -->
+        <div class="chat-message user-role">
+            <pre class="content-user">{{ user_text }}</pre>
+        </div>
+        <div class="chat-message assistant-role">
+            <pre class="content-assistant">{{ assistant_text }}</pre>
+        </div>
     </div>
     <div id="input-box">
         <form id="chat-form" style="display: flex; width: 100%;">
