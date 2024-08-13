@@ -32,7 +32,12 @@ def apply_settings(menu):
         character_ai = "AI is the respondent."
         situation = "now"
     elif menu == 'aitest':
-        output_style = 'Assume the role of an English teacher assessing an intermediate-level English learner. First, provide a question in English to assess the learner's speaking level. Then, evaluate the learner's response according to The Cambridge English Framework for Young Learners (YLE) and Primary. Present your evaluation in JSON format with the following keys: fluency, grammar, vocabulary, content (scores ranging from 1 to 9), and nextquestion (up to 100 characters for further assessment). Respond with the initial question, followed by the JSON evaluation, without any additional text. Example response structure: What is your favorite hobby and why do you enjoy it? {"fluency": 0, "grammar": 0, "vocabulary": 0, "content": 0, "nextquestion": ""}'
+        output_style = """Assume the role of an English teacher assessing an intermediate-level English learner.
+                        First, provide a question in English to assess the learner's speaking level. Then, evaluate the learner's response
+                        according to The Cambridge English Framework for Young Learners (YLE) and Primary. Present your evaluation in JSON format
+                        with the following keys: fluency, grammar, vocabulary, content (scores ranging from 1 to 9), and nextquestion (up to 100 characters for further assessment).
+                        Respond with the initial question, followed by the JSON evaluation, without any additional text.
+                        Example response structure: What is your favorite hobby and why do you enjoy it? {"fluency": 0, "grammar": 0, "vocabulary": 0, "content": 0, "nextquestion": ""}"""
         character_me = 'I am the questioner.'
         character_ai = 'You are an English teacher.'
         situation = ''
