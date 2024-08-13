@@ -17,14 +17,14 @@
     width: 500px;
 }
 
-#login-div {
+#join-div {
     width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#login {
+#join-box {
     width: 300px;
     padding: 20px;
     border: 1px solid gray;
