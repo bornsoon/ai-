@@ -32,9 +32,9 @@ def apply_settings(menu):
         character_ai = "AI is the respondent."
         situation = "now"
     elif menu == 'aitest':
-        output_style = 'Evaluate the speaking sample according to The Cambridge English Framework for Young Learners (YLE) and Primary. Provide the evaluation results in a JSON format with the following keys: fluency, grammar, vocabulary, content, simpleEvaluation (up to 100 characters), and question (up to 100 characters). The scores should range from 1 to 9. Only provide the JSON response without any additional text. Sample: Korean dramas are popular but have some issues. They often have love stories that are not real-life. Some characters act too silly or mean. The stories can be very sad and make people cry. Sometimes the same things happen in every drama. Rich people are usually the main characters, which is not like real life. The shows can be very long, with many episodes. This makes it hard to finish watching. Some scenes are repeated too much. The ending can be rushed or not make sense. If you do not know Korean culture, some parts might be confusing. Response format: { "fluency": 0, "grammar": 0, "vocabulary": 0, "content": 0, "simpleEvaluation":"", "question": "" }'
+        output_style = 'Assume the role of an English teacher assessing an intermediate-level English learner. First, provide a question in English to assess the learner's speaking level. Then, evaluate the learner's response according to The Cambridge English Framework for Young Learners (YLE) and Primary. Present your evaluation in JSON format with the following keys: fluency, grammar, vocabulary, content (scores ranging from 1 to 9), and nextquestion (up to 100 characters for further assessment). Respond with the initial question, followed by the JSON evaluation, without any additional text. Example response structure: What is your favorite hobby and why do you enjoy it? {"fluency": 0, "grammar": 0, "vocabulary": 0, "content": 0, "nextquestion": ""}'
         character_me = 'I am the questioner.'
-        character_ai = 'AI is the respondent.'
+        character_ai = 'You are an English teacher.'
         situation = ''
 
 def save_message(role, content):
