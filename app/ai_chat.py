@@ -27,7 +27,7 @@ def apply_settings(menu):
 
     # Set global variables based on the menu
     if menu == 'chat':
-        output_style = "Please respond in written form of 100 characters or less."
+        output_style = "Respond within 100 characters."
         character_me = "I am the questioner."
         character_ai = "AI is the respondent."
         situation = "now"
