@@ -27,6 +27,7 @@ header {
 #logo-area {
     display: flex;
     align-items: center;
+    margin: 0px 20px;
 }
 
 #logo-img {
@@ -61,6 +62,7 @@ header {
     border: none;
     font-size: 24px;
     cursor: pointer;
+    margin: 0px 20px;
 }
 
 #content {
@@ -71,11 +73,11 @@ header {
 
 @media (max-width: 900px) {
     header {
-        height: 50px;
-        padding: 0 20px;
+        height: 90px;
+        padding: 0px;
         justify-content: space-between;
         align-items: center;
-        background-color: rgba(0, 0, 0, 0);
+        background-color: rgba(255, 255, 255, 0);
         position: fixed;
         width: 100%;
         z-index: 10;
@@ -103,29 +105,35 @@ header {
         flex-direction: column;
         align-items: center;
         position: absolute;
-        top: 50px;
         left: 0;
         background-color: #f8f9fa;
         width: 100%;
         text-align: center;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 10;
     }
-
-    #navi.active, #login.active {
+    
+    #navi.active {
         display: flex;
+        top: 90px; /* header height */
     }
-
+    
+    #login.active {
+        display: flex;
+        top: calc(90px + 100%); /* Place below #navi */
+    }
+    
     #navi ul, #login ul {
         flex-direction: column;
         align-items: center;
         width: 100%;
     }
-
+    
     #navi ul li, #login ul li {
         margin: 10px 0;
     }
 
     #content {
-        margin-top: 0px;
+        margin-top: 90px;
     }
 }
