@@ -1,18 +1,17 @@
-<!-- chat.html 채팅화면 -->
+<!-- chat.html -->
 {% extends "base.html" %}
 
 {% block title %}Ai 영어친구{% endblock %}
 
 {% block head %}
-<link href="{{ url_for('static', filename='css/aitest.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/popup.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/listen.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/chat.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/setup.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div id="voiceset">S</div>
+<div id="voiceset" style="display: block;">S</div>  <!-- S 버튼이 노출되도록 설정 -->
 <div id="text-window">M</div>
-<div id="listen" onclick="openSettings()">L</div>
+<div id="listen">L</div>
 <div id="mic" onclick="toggleRecognition()" 
      data-mic-on="{{ url_for('static', filename='images/mic-on.png') }}"
      data-mic-off="{{ url_for('static', filename='images/mic-off.png') }}">
@@ -28,34 +27,63 @@
     </div>
 </div>
 
-<div id="chat-area" style="display: block;"> <!-- 기본값 노출 -->
-    <h2>AI 영어평가</h2>
-    <div id="chatting">
-        <div class="chat-message user-role">
-            <pre class="content-user">{{ user_text }}</pre>
-        </div>
-        <div class="chat-message assistant-role">
-            <pre class="content-assistant">{{ assistant_text }}</pre>
-        </div>
+<div id="chat-area">
+    <div id="window-title">
+        Ai영어평가        
     </div>
-    <div id="chatting-window">
-        <!-- 대화 내용 누적될 영역 -->
-    </div>
+    <div id="chatting"></div>
+    <div id="chatting-window"></div>
     <div id="input-box">
         <form id="chat-form" style="display: flex; width: 100%;">
             <label for="user-input" style="flex-grow: 1;"></label>
-            <input type="text" id="user-input" name="user-input" style="flex-grow: 1;" placeholder="평가를 위한 300자 이내의 영문으로 대화해 주세요.">
+            <input type="text" id="user-input" name="user-input" style="flex-grow: 1;" placeholder="평가를 위해 가능하면 길게 2회 이상 대화해 주세요.">
             <input type="submit" value="입력" id="input-button">
         </form>
     </div>
 </div>
-{% include 'listen.html' %}
 
-{% include 'popup.html' %}
+<!-- setup.html 포함 -->
+<div id="setup-container" style="display: none;">
+    {% include 'setup.html' %}
+</div>
+
+<!-- start.html이 처음에 보이도록 설정 -->
+<div id="start-container" style="z-index: 999; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
+    <iframe src="{{ url_for('main.start') }}" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/aitest.js') }}"></script>
-<script src="{{ url_for('static', filename='js/popup-voice.js') }}"></script>
-<script src="{{ url_for('static', filename='js/listen.js')}}"></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script src="{{ url_for('static', filename='js/setup.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const startContainer = document.getElementById('start-container');
+        const setupContainer = document.getElementById('setup-container');
+        const textWindowButton = document.getElementById('text-window');
+        const chatArea = document.getElementById('chat-area');
+
+        textWindowButton.addEventListener('click', function() {
+            chatArea.style.display = (chatArea.style.display === 'none' || chatArea.style.display === '') ? 'block' : 'none';
+        });
+
+        if (startContainer && setupContainer) {
+            // 'L' 버튼 클릭 시 start.html 설정창 열기
+            document.getElementById('listen').addEventListener('click', function() {
+                console.log('L 버튼 클릭됨');
+                startContainer.style.display = 'block';
+            });
+
+            // 'S' 버튼 클릭 시 setup.html 설정창 열기/숨기기
+            document.getElementById('voiceset').addEventListener('click', function() {
+                if (setupContainer.style.display === 'none' || setupContainer.style.display === '') {
+                    setupContainer.style.display = 'block';
+                } else {
+                    setupContainer.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

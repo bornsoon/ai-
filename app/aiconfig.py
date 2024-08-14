@@ -1,6 +1,6 @@
 # aiconfig.py
 menu_settings = {
-    'chat': {"temperature": 0.9, "max_length": 100, "top_k": 50, "top_p": 0.95, "context_size": 2},
+    'chat': {"temperature": 0.8, "max_length": 100, "top_k": 50, "top_p": 0.95, "context_size": 2},
     'aitest': {"temperature": 0.5, "max_length": 150, "top_k": 40, "top_p": 0.85, "context_size": 0}
 }
 

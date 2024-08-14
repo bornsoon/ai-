@@ -27,10 +27,10 @@ def apply_settings(menu):
 
     # Set global variables based on the menu
     if menu == 'chat':
-        output_style = "The answer should be less than 100 characters and seems to use relatively simple words. Give me another question that follows along."
+        output_style = "Your answer should be less than 130 characters and likely use relatively simple words. Please answer and then ask another question."
         character_me = "I am the questioner."
-        character_ai = "AI is the respondent."
-        situation = "now"
+        character_ai = "AI is the respondent and questioner"
+        situation = "random"
     elif menu == 'aitest':
         output_style = """Assume the role of an English teacher assessing an intermediate-level English learner.
                         First, provide a question in English to assess the learner's speaking level. Then, evaluate the learner's response

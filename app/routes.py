@@ -61,6 +61,10 @@ def login():
 def join():
     return render_template('join.html')
 
+@main_bp.route('/start')
+def start():
+    return render_template('start.html')
+
 @main_bp.route('/check_session')
 def check_session():
     user = session.get('user')

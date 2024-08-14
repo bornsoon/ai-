@@ -1,0 +1,48 @@
+<!-- setup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음성 환경 설정</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/setup.css') }}">
+</head>
+<body>
+    <div id="layer_bg">
+        <div id="setup-container">
+            <div id="set-title">
+                <h3>음성 입출력 설정</h3>
+            </div>
+            <br>
+            <label for="voiceSelect">Voice </label>
+            <select id="voiceSelect"></select>
+            <br>
+            <label for="rate">Speed: <span id="rateValue">0.9</span></label>
+            <input type="range" id="rate" min="0.5" max="2" value="0.9" step="0.1">            
+            <br>
+            <label for="pitch">Pitch: <span id="pitchValue">1.1</span></label>
+            <input type="range" id="pitch" min="0" max="2" value="1.1" step="0.1">            
+            <br>
+            <label for="volume">Volume: <span id="volumeValue">0.9</span></label>
+            <input type="range" id="volume" min="0" max="1" value="0.9" step="0.1">            
+            <textarea id="user-text" rows="4" cols="50">Hello, English Friend will help you learn English.</textarea>
+            <br><br>
+            <span>음성출력 사용 on/off</span><br>
+            <label class="switch">
+                <input type="checkbox" id="voiceToggle" checked>
+                <span class="slider round"></span>
+            </label>
+            <br>
+            <button id="test-voice">테스트 출력</button>
+            <br><br>
+            <h3>음성 입력 설정</h3>
+            <label for="timeout">녹음 대기시간 (초):</label><input type="number" id="timeout" value="10">
+            <br>
+            <button onclick="saveSettings()">저장</button>
+            <button onclick="closeSettings()">취소</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/setup.js') }}"></script>
+</body>
+</html>

@@ -1,128 +1,31 @@
-/* popup.css */
-#layerPopup {
-    display: none;
-}
-
-#layerPopup + label {
-    display: inline-block;
-    padding: 7px 14px;
-    background: #333;
-    color: #fff;
-    cursor: pointer;
-}
-
-#layer_bg {
-    display: none;
-    position: fixed; /* 최상위 고정 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000; /* 최상위로 배치 */
-}
-
-#layer_bg > #popup {
-    position: absolute;
-    padding: 15px;
-    box-sizing: border-box;
-    border-radius: 15px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+#layer_bg, #settingsPopup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
     width: 400px;
-    height: 400px;
-    background: #fff;
-    box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.2);
+    margin: auto;
+    margin-top: 100px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#layer_bg > #popup > h2 {
-    margin-bottom: 25px;
+h2 {
+    text-align: center;
 }
 
-#layer_bg > #popup > h2 > label {
-    float: right;
-    cursor: pointer;
+#popup textarea, #settingsPopup input[type="number"], select, input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
 }
 
-#layerPopup:checked ~ #layer_bg {
-    display: block;
+#popup button, #settingsPopup button {
+    margin-top: 10px;
+    width: 100%;
 }
 
-/* The switch - the box around the slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    vertical-align: middle;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-    display: none;
-}
-
-/* The slider */
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-p {
-    margin: 0px;
-    display: inline-block;
-    font-size: 15px;
-    font-weight: bold;
-}
-
-#test-voice {
-    width: 100px;
-    height: 30px;
-    border: 0;
-    border-radius: 10px;
-    background-color: rgb(0, 0, 0);
-    color: white;
+#popup label, #settingsPopup label {
+    margin-top: 10px;
+    width: 100%;
 }

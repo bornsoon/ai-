@@ -106,11 +106,19 @@
     margin: 20px
 }
 
+#dailyTable th, td {
+    text-align: center;
+}
+
 #weeklyTable {
     width: 90%;
     height: 100%;
     background-color: beige;
     margin: 20px
+}
+
+#Table th, td {
+    text-align: center;
 }
 
 @media (max-width: 768px) {

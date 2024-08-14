@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/start.css') }}">
+</head>
+<body>
+    <div id="start-area1">
+        <div id="start-title">설정</div>
+        <div id="start-table">
+            <table>
+                <tr>
+                    <th>캐릭터</th>
+                    <td>
+                        <select id="user-select">
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>AI 캐릭터</th>
+                    <td>
+                        <select id="ai-select">
+                            <option value="friendly">Friendly AI</option>
+                            <option value="strict">Strict AI</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>상황 설정</th>
+                    <td>
+                        <input type="text" id="situation-input" placeholder="상황을 입력하세요">
+                    </td>
+                </tr>
+                <tr>
+                    <th>난이도</th>
+                    <td>
+                        <select id="difficulty-select">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="start-text">
+            설정 후 [시작] 버튼을 눌러 학습을 시작하세요.
+        </div>
+        <button id="start-first">시작</button>
+        <button id="cancel-button">취소</button>
+    </div>
+
+    <script>
+        document.getElementById('start-first').addEventListener('click', function() {
+            const situation = document.getElementById('situation-input').value;
+            localStorage.setItem('situation', situation);
+
+            // start-container 숨기기
+            parent.document.getElementById('start-container').style.display = 'none';
+        });
+
+        document.getElementById('cancel-button').addEventListener('click', function() {
+            // start-container 숨기기
+            parent.document.getElementById('start-container').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
