@@ -5,7 +5,7 @@
     width: 40%; /* 가로 폭 조절 */
     height: 200px; /* 100vh에서 120px을 뺀 높이 */
     position: fixed; /* 고정된 위치를 유지합니다. */
-    right: 50%; /* 왼쪽 여백을 없애서 화면의 왼쪽에 고정합니다. */
+    /* left: 50%; 왼쪽 여백을 없애서 화면의 왼쪽에 고정합니다. */
     bottom: 0px; /* 하단 여백을 조정합니다. (원하는 여백 크기로 변경 가능) */
     width: 100%; /* 너비를 화면 전체로 설정합니다. */
     padding: 20px; /* 파란색 포인트와 여백을 줄이기 위해 패딩을 줄입니다. */
@@ -14,7 +14,7 @@
     z-index: 0;
     margin: 100px;
     top: 35%;
-    /* align-content: center; */
+    align-content: center;
 }
 
 #setup-container .blue-point {

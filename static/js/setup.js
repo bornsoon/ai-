@@ -1,12 +1,9 @@
-// setup.js
-
 if (window.hasSetupJsLoaded) {
     console.warn('setup.js already loaded');
 } else {
     window.hasSetupJsLoaded = true;
 
-    let recognitionInstance;  // 이 변수는 이 파일 내에서만 사용하도록 변수명을 변경
-
+    let recognitionInstance;
     let isRecording = false;
     let timeoutDuration = 10000;
     let inactivityTimer;
@@ -122,9 +119,9 @@ if (window.hasSetupJsLoaded) {
             console.warn('Selected voice not found, using default voice.');
         }
 
-        utterance.rate = document.getElementById('rate').value;
-        utterance.pitch = document.getElementById('pitch').value;
-        utterance.volume = document.getElementById('volume').value;
+        utterance.rate = parseFloat(document.getElementById('rate').value);
+        utterance.pitch = parseFloat(document.getElementById('pitch').value);
+        utterance.volume = parseFloat(document.getElementById('volume').value);
 
         window.speechSynthesis.speak(utterance);
     }
@@ -164,11 +161,15 @@ if (window.hasSetupJsLoaded) {
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        populateVoiceList(); // Populate voice list on load
+        speechSynthesis.onvoiceschanged = populateVoiceList; // Update voice list if it changes
+
         const voiceSetButton = document.getElementById('voiceset');
         const textWindowButton = document.getElementById('text-window');
-        const setupContainer = document.getElementById('setup-container');  // 수정된 부분
+        const setupContainer = document.getElementById('setup-container');
         const chatArea = document.getElementById('chat-area');
-    
+        const testVoiceButton = document.getElementById('test-voice'); // "테스트 출력" 버튼
+
         // 'S' 버튼으로 설정창 보이기/숨기기
         voiceSetButton.addEventListener('click', function() {
             if (setupContainer.style.display === 'none' || setupContainer.style.display === '') {
@@ -185,6 +186,12 @@ if (window.hasSetupJsLoaded) {
             } else {
                 chatArea.style.display = 'none';
             }
+        });
+
+        // "테스트 출력" 버튼 클릭 시 동작 설정
+        testVoiceButton.addEventListener('click', function() {
+            const text = document.getElementById('user-text').value || "Hello, English Friend will help you learn English.";
+            speak(text);
         });
     
         // 기타 이벤트 리스너 추가
