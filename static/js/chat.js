@@ -1,5 +1,8 @@
 // chat.js
 
+// Track the last placeholders added
+let lastPlaceholders = {};
+
 // Submit form and handle AI response
 async function submitForm() {
     const userInput = document.getElementById('user-input').value.trim();
@@ -111,9 +114,6 @@ function updateAssistantMessage(assistantMessage) {
 function scrollToBottom(element) {
     element.scrollTop = element.scrollHeight;
 }
-
-// Track the last placeholders added
-let lastPlaceholders = {};
 
 // Attach event listeners after the DOM has loaded
 document.addEventListener('DOMContentLoaded', function() {
