@@ -254,6 +254,7 @@ h2 {
 
 @media (max-width: 768px) {
     #avata {
+        min-width: 300px;
         padding-top: 50px;
     }
 
