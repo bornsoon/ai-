@@ -1,5 +1,8 @@
 // chat.js
 
+// Track the last placeholders added
+let lastPlaceholders = {};
+
 // Submit form and handle AI response
 async function submitForm() {
     const userInput = document.getElementById('user-input').value.trim();
@@ -8,7 +11,8 @@ async function submitForm() {
         return;
     }
 
-    displayMessages(userInput, '.....AI 가 생각 중....');
+    // Get references to placeholders
+    lastPlaceholders = displayMessages(userInput, '.....AI 가 평가 중....');
 
     try {
         const response = await fetch('/api/aiChat', {
@@ -48,7 +52,10 @@ function displayMessages(userInput, assistantMessage) {
     const chatting = document.getElementById('chatting');
     const chattingWindow = document.getElementById('chatting-window');
 
+    // Clear previous chat in #chatting
     chatting.innerHTML = '';
+
+    // Create and append user message
     const newUserMessage = document.createElement('div');
     newUserMessage.classList.add('chat-message', 'user-role');
     newUserMessage.innerHTML = `
@@ -60,10 +67,12 @@ function displayMessages(userInput, assistantMessage) {
     chatting.appendChild(newUserMessage);
     document.getElementById('user-input').value = '';
 
+    // Clone and append user message to #chatting-window
     const newUserMessageForWindow = newUserMessage.cloneNode(true);
     chattingWindow.appendChild(newUserMessageForWindow);
     scrollToBottom(chattingWindow);
 
+    // Create and append assistant's placeholder message
     const placeholderMessage = document.createElement('div');
     placeholderMessage.classList.add('chat-message', 'assistant-role');
     placeholderMessage.innerHTML = `
@@ -73,18 +82,29 @@ function displayMessages(userInput, assistantMessage) {
         </div>
     `;
     chatting.appendChild(placeholderMessage);
+    
+    // Clone and append assistant's placeholder to #chatting-window
     const placeholderMessageForWindow = placeholderMessage.cloneNode(true);
     chattingWindow.appendChild(placeholderMessageForWindow);
     scrollToBottom(chattingWindow);
+
+    // Return references to the placeholder elements
+    return {
+        placeholderInChatting: placeholderMessage,
+        placeholderInWindow: placeholderMessageForWindow
+    };
 }
 
 // Update the displayed AI response message
 function updateAssistantMessage(assistantMessage) {
-    const assistantMessageElement = document.querySelector('.content-assistant:last-child');
-    if (assistantMessageElement) {
-        assistantMessageElement.textContent = assistantMessage;
+    // Retrieve the last placeholder message in both areas
+    const { placeholderInChatting, placeholderInWindow } = lastPlaceholders;
+
+    if (placeholderInChatting && placeholderInWindow) {
+        placeholderInChatting.querySelector('.content-assistant').textContent = assistantMessage;
+        placeholderInWindow.querySelector('.content-assistant').textContent = assistantMessage;
     } else {
-        console.warn('No assistant message element found to update.');
+        console.warn('No placeholder message element found to update.');
     }
 
     console.log('Displayed AI response:', assistantMessage);
@@ -125,23 +145,16 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn("'S' 버튼을 찾을 수 없습니다.");
     }
 
-    // if (textWindowButton) {
-    //     console.log("'M' 버튼이 존재합니다.");
-    //     // 'M' 버튼으로 대화창 보이기/숨기기
-        textWindowButton.addEventListener('click', function() {
-            // chatArea.style.display = (chatArea.style.display === 'none' || chatArea.style.display === '') ? 'block' : 'none';
-            if (chatArea.style.display === 'none' || chatArea.style.display === '') {
-                console.log("'M' 버튼 클릭 - 대화창 보이기");
-                chatArea.style.display = 'block';
-            } else {
-                console.log("'M' 버튼 클릭 - 대화창 숨기기");
-                chatArea.style.display = 'none';
-            }
-            console.log("현재 chatArea의 display 상태:", chatArea.style.display);
-        });
-    // } else {
-    //     console.warn("'M' 버튼을 찾을 수 없습니다.");
-    // }
+    textWindowButton.addEventListener('click', function() {
+        if (chatArea.style.display === 'none' || chatArea.style.display === '') {
+            console.log("'M' 버튼 클릭 - 대화창 보이기");
+            chatArea.style.display = 'block';
+        } else {
+            console.log("'M' 버튼 클릭 - 대화창 숨기기");
+            chatArea.style.display = 'none';
+        }
+        console.log("현재 chatArea의 display 상태:", chatArea.style.display);
+    });
 
     if (listenButton) {
         console.log("'L' 버튼이 존재합니다.");
