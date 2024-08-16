@@ -7,57 +7,61 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/start.css') }}">
 </head>
 <body>
-    <div id="start-area1">
+    <div id="start-area">
+        <div id="start-title">설정 후 대화하기</div>
         <div id="start">
-            <div id="start-title">설정 후 대화하기</div>
             <div id="start-avata">
-                <img src="{{ url_for('static', filename='images/ch00-1.gif') }}" alt="아바타 이미지" id="start-img">
+                <img src="{{ url_for('static', filename='images/ch00-2.gif') }}" alt="아바타 이미지" id="start-img">
             </div>
-        </div>
-        <div id="start-table">
-            <table>
-                <tr>
-                    <th>캐릭터</th>
-                    <td>
-                        <select id="user-select">
-                            <option value="student">Student</option>
-                            <option value="teacher">Teacher</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>AI 캐릭터</th>
-                    <td>
-                        <select id="ai-select">
-                            <option value="friendly">Friendly AI</option>
-                            <option value="strict">Strict AI</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>상황 설정</th>
-                    <td>
-                        <input type="text" id="situation-input" placeholder="상황을 입력하세요">
-                    </td>
-                </tr>
-                <tr>
-                    <th>난이도</th>
-                    <td>
-                        <select id="difficulty-select">
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
+            <div id="start-table">
+                <table>
+                    <tr>
+                        <th>캐릭터</th>
+                        <td>
+                            <select id="user-select">
+                                <option value="student">Student</option>
+                                <option value="teacher">Teacher</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>AI 캐릭터</th>
+                        <td>
+                            <select id="ai-select">
+                                <option value="friendly">Friendly AI</option>
+                                <option value="strict">Strict AI</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상황 설정</th>
+                        <td>
+                            <input type="text" id="situation-input" placeholder="상황을 입력하세요">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>난이도</th>
+                        <td>
+                            <select id="difficulty-select">
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <div id="start-text">
-            설정 후 [시작] 버튼을 눌러 학습을 시작하세요.
+            [시작] 버튼을 눌러 학습을 시작하세요<div class="br">
+                [취소]버튼 클릭시 현재 설정을 유지합니다.
+            </div>
         </div>
-        <button id="start-first">시작</button>
-        <button id="cancel-button">취소</button>
+        <div id="area-button">
+            <button id="start-first">시작</button>
+            <button id="cancel-button">취소</button>
+        </div>
     </div>
 
     <script>

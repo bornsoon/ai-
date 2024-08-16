@@ -1,4 +1,3 @@
-<!-- header.html -->
 <div id="logo-area">
     <img src="{{ url_for('static', filename='images/net.png') }}" alt="Avatar" id="logo-img">
     <div id="logo"><a href="{{ url_for('main.index') }}">Ai영어친구</a></div>
@@ -13,8 +12,12 @@
 </div>
 <div id="login">
     <ul>
-        <!-- <li><a href="{{ url_for('main.mypage') }}">마이페이지</a></li> -->
-        <li><a href="{{ url_for('main.login') }}">로그인</a></li>
-        <li><a href="{{ url_for('main.join') }}">회원가입</a></li>
+        {% if session.logged_in %}
+            <li><a href="{{ url_for('main.mypage') }}">마이페이지</a></li>
+            <li><a href="{{ url_for('main.logout') }}">로그아웃</a></li>
+        {% else %}
+            <li><a href="{{ url_for('main.login') }}">로그인</a></li>
+            <li><a href="{{ url_for('main.join') }}">회원가입</a></li>
+        {% endif %}
     </ul>
 </div>

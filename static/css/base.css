@@ -6,6 +6,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    min-width: 320px;
 }
 
 a {
@@ -75,7 +76,7 @@ header {
 @media (max-width: 900px) {
     header {
         height: 90px;
-        padding: 0px;
+        padding: 0;
         justify-content: space-between;
         align-items: center;
         background-color: rgba(255, 255, 255, 1);
@@ -84,21 +85,10 @@ header {
         z-index: 10;
     }
 
-    #logo-area {
-        width: auto;
-    }
-
-    #logo-img {
-        width: 50px;
-        display: block;
-    }
-
-    #logo {
-        display: none;
-    }
-
     #menu-toggle {
         display: block;
+        color: black;
+        text-align: right;
     }
 
     #navi, #login {
@@ -113,28 +103,28 @@ header {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         z-index: 10;
     }
-    
+
     #navi.active {
         display: flex;
         top: 90px; /* header height */
     }
-    
+
     #login.active {
         display: flex;
-        top: calc(90px + 100%); /* Place below #navi */
+        top: calc(90px + 100%); /* This might need adjustment based on #navi height */
     }
-    
+
     #navi ul, #login ul {
         flex-direction: column;
         align-items: center;
         width: 100%;
     }
-    
-    #navi ul li, #login ul li {
-        margin: 10px 0;
-    }
 
+    #navi li, #login li {
+        height: 30px;
+    }
+    
     #content {
-        margin-top: 90px;
+        margin-top: 90px; /* Ensuring content is below the fixed header */
     }
 }

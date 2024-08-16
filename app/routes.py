@@ -34,13 +34,8 @@ def aitest():
 @main_bp.route('/myreport')
 def myreport():
     user = session.get('user')
-    if user:
-        res_text = session.get('res_text', '')
-        return render_template('myreport.html', res_text=res_text)
-    else:
-        session['next'] = request.url
-        flash('로그인이 필요합니다.', 'danger')
-        return redirect(url_for('main.login'))
+    res_text = session.get('res_text', '')
+    return render_template('myreport.html')
 
 @main_bp.route('/mypage')
 def mypage():

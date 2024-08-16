@@ -1,7 +1,7 @@
 #start-area {
-    max-width: 400px; /* 설정창의 최대 너비 */
+    max-width: 500px; /* 설정창의 최대 너비 */
     min-width: 300px; 
-    width: 40%; /* 설정창의 가로 폭 조절 */
+    width: 50%; /* 설정창의 가로 폭 조절 */
     font-size: 13px;
     height: auto; /* 높이를 내용에 따라 자동 조절 */
     position: fixed; /* 고정된 위치를 유지합니다. */
@@ -13,10 +13,6 @@
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); /* 가벼운 그림자를 추가하여 입체감을 줍니다. */
     z-index: 100; /* 다른 요소보다 앞에 위치하도록 z-index 설정 */
     border-radius: 10px; /* 모서리를 둥글게 */
-}
-
-#start {
-    width: 100%;
 }
 
 #start-title {
@@ -28,22 +24,6 @@
     text-align: center; /* 타이틀 중앙 정렬 */
     padding: 10px 0; /* 타이틀 내부 패딩 */
     background-color: #ffffff; /* 타이틀 배경색 */
-}#start-area1 {
-    max-width: 400px; /* 설정창의 최대 너비 */
-    min-width: 300px; 
-    width: 40%; /* 설정창의 가로 폭 조절 */
-    font-size: 13px;
-    height: auto; /* 높이를 내용에 따라 자동 조절 */
-    position: fixed; /* 고정된 위치를 유지합니다. */
-    left: 50%; /* 가로 방향으로 화면의 중앙에 배치 */
-    top: 50%; /* 세로 방향으로 화면의 중앙에 배치 */
-    transform: translate(-50%, -50%); /* 중앙 배치를 위해 가로, 세로 방향으로 이동 */
-    padding: 20px; /* 여백 조절 */
-    background-color: #f0f0f0; /* 배경색 */
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); /* 가벼운 그림자를 추가하여 입체감을 줍니다. */
-    z-index: 100; /* 다른 요소보다 앞에 위치하도록 z-index 설정 */
-    border-radius: 10px; /* 모서리를 둥글게 */
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 계산 */
 }
 
 #start {
@@ -52,7 +32,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px; /* 아래에 여백 추가 */
+    margin-bottom: 10px; /* 아래에 여백 추가 */
 }
 
 #start-title {
@@ -71,14 +51,13 @@
 }
 
 #start-img {
-    width: 100px; /* 아바타 이미지 크기 조정 */
+    width: 200px; /* 아바타 이미지 크기 조정 */
     height: auto; /* 비율에 맞게 높이 자동 조정 */
-    border-radius: 50%; /* 이미지 둥글게 */
+    border-radius: 10%; /* 이미지 둥글게 */
 }
 
 #start-table {
     width: 100%; /* 테이블을 창 너비에 맞춤 */
-    margin-bottom: 20px; /* 아래에 여백 추가 */
 }
 
 #start-table table {
@@ -105,9 +84,37 @@ button:hover {
     background-color: #1976D2;
 }
 
+#start-table table {
+    width: 100%; /* 테이블을 창 너비에 맞춤 */
+    margin-bottom: 20px; /* 아래에 여백 추가 */
+}
+
+#start-text {
+    text-align: center; /* 설명 문구를 중앙 정렬 */
+    margin-bottom: 20px; /* 설명 문구 아래에 여백 추가 */
+}
+
+button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%; /* 버튼의 가로폭을 48%로 */
+    margin: 5px 1%; /* 버튼 간격 조정 */
+}
+
+button:hover {
+    background-color: #1976D2;
+}
+
+
 @media (max-width: 768px) {
-    #start-area1 {
+    #start-area {
         width: 80%; /* 작은 화면에서는 설정창의 가로 폭을 80%로 조절 */
+        max-width: 300px; /* 설정창의 최대 너비 */
+        min-width: 250px; 
     }
 
     #start {
@@ -120,48 +127,7 @@ button:hover {
     }
 
     #start-img {
-        width: 80px; /* 작은 화면에서 아바타 이미지 크기 조정 */
-    }
-
-    button {
-        width: 100%; /* 작은 화면에서는 버튼이 전체 너비를 차지하도록 설정 */
-        margin: 5px 0; /* 버튼 간격 조정 */
-    }
-}
-
-
-#start-img {
-    width: 200;
-}
-
-#start-table table {
-    width: 100%; /* 테이블을 창 너비에 맞춤 */
-    margin-bottom: 20px; /* 아래에 여백 추가 */
-}
-
-#start-text {
-    text-align: center; /* 설명 문구를 중앙 정렬 */
-    margin-bottom: 20px; /* 설명 문구 아래에 여백 추가 */
-}
-
-button {
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 48%; /* 버튼의 가로폭을 48%로 */
-    margin: 5px 1%; /* 버튼 간격 조정 */
-}
-
-button:hover {
-    background-color: #1976D2;
-}
-
-@media (max-width: 768px) {
-    #start-area {
-        width: 80%; /* 작은 화면에서는 설정창의 가로 폭을 80%로 조절 */
+        width: 100%; /* 작은 화면에서 아바타 이미지 크기 조정 */
     }
 
     button {
