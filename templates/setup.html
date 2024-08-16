@@ -27,15 +27,13 @@
             <input type="range" id="volume" min="0" max="1" value="0.9" step="0.1">            
             <textarea id="user-text" rows="4" cols="50">Hello, English Friend will help you learn English.</textarea>
             <br><br>
-            <span>음성출력 사용 on/off</span><br>
             <label class="switch">
                 <input type="checkbox" id="voiceToggle" checked>
                 <span class="slider round"></span>
             </label>
-            <br>
+            <span>음성출력 사용 on/off</span><br>
             <button id="test-voice">테스트 출력</button>
             <br><br>
-            <h3>음성 입력 설정</h3>
             <label for="timeout">녹음 대기시간 (초):</label><input type="number" id="timeout" value="10">
             <br>
             <button onclick="saveSettings()">저장</button>
