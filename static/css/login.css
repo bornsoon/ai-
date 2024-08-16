@@ -18,15 +18,15 @@
 }
 
 #login-div {
-    width: 500px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 #login-box {
-    width: 300px;
-    padding: 20px;
+    width: 280px;
+    padding: 10px;
     border: 1px solid gray;
     border-radius: 5px;
     background-color: white;
