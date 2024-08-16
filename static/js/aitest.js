@@ -12,7 +12,7 @@ async function submitForm() {
     }
 
     // Get references to placeholders
-    lastPlaceholders = displayMessages(userInput, '.....AI 가 평가 중....');
+    lastPlaceholders = displayMessages(userInput, '.....AI 가 생각 중....');
 
     try {
         const response = await fetch('/api/aiChat', {
@@ -59,9 +59,9 @@ function displayMessages(userInput, assistantMessage) {
     const newUserMessage = document.createElement('div');
     newUserMessage.classList.add('chat-message', 'user-role');
     newUserMessage.innerHTML = `
-        <div>
-            <div id="role-user">나</div>    
-            <pre class="content-user">${userInput}</pre>
+        <div class="box-user">
+        <pre class="content-user">${userInput}</pre>
+        <div id="role-user">나</div>    
         </div>
     `;
     chatting.appendChild(newUserMessage);
@@ -76,7 +76,7 @@ function displayMessages(userInput, assistantMessage) {
     const placeholderMessage = document.createElement('div');
     placeholderMessage.classList.add('chat-message', 'assistant-role');
     placeholderMessage.innerHTML = `
-        <div>
+        <div class="box-assistant">
             <div id="role-assistant">Ai</div>
             <pre class="content-assistant">${assistantMessage}</pre>
         </div>

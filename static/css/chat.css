@@ -1,11 +1,14 @@
 /* chat.css */
 #avata {
     flex: 1;
+    min-width: 500px;
     padding-top: 150px;
-    background-color: #e9ecef;
-    padding: 20px;
+    background-color: #cccccc; /* 배경 색상 */
+    padding: 10px;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     position: relative;
+    width: 20%; /* 왼쪽 영역의 너비 */
+    box-sizing: border-box;
 }
 
 #avatar-container {
@@ -26,6 +29,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 30px; /* 모바일에서 추가 마진 */
 }
 
 #level, #level-no {
@@ -37,18 +41,13 @@
     font-weight: bold;
 }
 
-#avata {
-    width: 20%; /* 왼쪽 영역의 너비 */
-    background-color: #cccccc; /* 배경 색상 */
-    padding: 10px;
-    box-sizing: border-box;
-}
-
 #chat-area {
-    display: block; 
+    display: flex; 
     flex-direction: column;
     height: calc(100vh - 120px); /* 헤더 높이 제외 */
-    width: 500px; /* 전체 너비 */
+    width: 80%; /* 전체 너비를 더 넓게 조정 */
+    max-width: 800px;
+    min-width: 300px;
     background-color: #e9ecef;
 }
 
@@ -61,7 +60,7 @@ h2 {
 }
 
 #input-box {
-    flex: 0 0 10px; /* 입력 박스 높이 고정 */
+    flex: 0 0 50px; /* 입력 박스 높이 고정 */
     padding: 10px;
     display: flex;
     align-items: center;
@@ -73,7 +72,6 @@ h2 {
     background-color: #e9ecef;
     overflow-y: auto; /* 세로 스크롤 가능 */
     padding: 20px; /* 패딩 추가 */
-    flex-direction: column-reverse;
     height: calc(100vh - 280px);
     max-width: 100%; /* 부모 요소의 크기를 넘지 않도록 설정 */
 }
@@ -92,6 +90,16 @@ h2 {
     cursor: pointer;
 }
 
+.box-user {
+    display: flex;
+    justify-content: right;
+}
+
+.box-assistant {
+    display: flex;
+    justify-content: left;
+}
+
 #role-user, #role-assistant {
     width: 30px;
     height: 30px;
@@ -103,11 +111,11 @@ h2 {
 }
 
 #role-user {
-    background-color: burlywood;
+    background-color: cornflowerblue;
 }
 
 #role-assistant {
-    background-color: cornflowerblue;
+    background-color: burlywood;
 }
 
 .content-user, .content-assistant {
@@ -121,12 +129,14 @@ h2 {
 
 .content-user {
     background-color: rgba(145, 171, 255, 0.5);
-    text-align: left;
+    text-align: right; /* 내부 요소 오른쪽 정렬 */
+    margin-right: 10px; /* 오른쪽 정렬 시 약간의 여백 추가 */
 }
 
 .content-assistant {
     background-color: rgba(255, 175, 110, 0.5);
-    text-align: left;
+    text-align: left; /* 내부 요소 왼쪽 정렬 */
+    margin-left: 10px; /* 왼쪽 정렬 시 약간의 여백 추가 */
 }
 
 .user-role {
@@ -242,7 +252,7 @@ h2 {
     z-index: 990;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
     #avata {
         padding-top: 50px;
     }
@@ -250,6 +260,7 @@ h2 {
     #window-title {
         color: black;
     }
+
     #chatting {
         flex: 1;
         padding: 20px;
@@ -278,10 +289,6 @@ h2 {
         flex-direction: column;
         overflow-y: auto;
         background-color: rgba(0, 0, 0, 0);
-    }
-
-    #level-box {
-        margin-top: 30px;
     }
 
     #avatar-img {

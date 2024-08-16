@@ -34,3 +34,7 @@
 2024-08-16 11:41:31,754 ERROR: Error: llama runner process has terminated: exit status 0xc0000409 error:failed to create context with model 'C:\Users\begit\.ollama\models\blobs\sha256-6a0746a1ec1aef3e7ec53868f220ff6e389f6f8ef87a01d77c96807de94ca2aa' [in C:\project\sesac\aiFriend\app\ai_chat.py:197]
 2024-08-16 12:01:49,707 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
 2024-08-16 13:42:21,727 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
+2024-08-16 14:05:45,216 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
+2024-08-16 14:26:13,668 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
+2024-08-16 14:44:18,369 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
+2024-08-16 16:12:19,048 INFO: App startup [in C:\project\sesac\aiFriend\app\__init__.py:51]
