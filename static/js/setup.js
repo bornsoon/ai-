@@ -157,7 +157,7 @@ if (window.hasSetupJsLoaded) {
     }
 
     function closeSettings() {
-        document.getElementById('layer_bg').style.display = 'none';
+        document.getElementById('setup-container').style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
