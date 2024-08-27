@@ -1,22 +1,55 @@
-# app/models.py
-
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from datetime import datetime
 
 db = SQLAlchemy()
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
     user_id = db.Column(db.String(36), primary_key=True, nullable=False)
     id = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    userName = db.Column(db.String(255), nullable=False)
+    nickName = db.Column(db.String(255), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(db.DateTime, onupdate=datetime.utcnow)
     role = db.Column(db.String(255), nullable=False)
     socialLogin = db.Column(db.Boolean, default=False)
     withdrawal = db.Column(db.Boolean, default=False)
+    gender = db.Column(db.String(10), nullable=False)
+
+    # Relationship with UserLevel and UserCharacter
+    levels = db.relationship('UserLevel', backref='user', lazy=True)
+    characters = db.relationship('UserCharacter', backref='user', lazy=True)
+
+    def get_id(self):
+        return self.user_id
+
+class UserLevel(db.Model):
+    __tablename__ = 'user_level'
+    user_level_id = db.Column(db.String(36), primary_key=True, nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey('user.user_id'), nullable=False)
+    level_code = db.Column(db.String(10), nullable=False)  # 예: K1, A1 등
+    start_date = db.Column(db.DateTime, default=datetime.utcnow)
+    end_date = db.Column(db.DateTime, nullable=True)  # null이면 현재 레벨을 의미
+
+class Character(db.Model):
+    __tablename__ = 'character'
+    character_id = db.Column(db.String(36), primary_key=True, nullable=False)
+    level_code = db.Column(db.String(10), nullable=False)  # 예: K1, A1 등
+    action_type = db.Column(db.String(50), nullable=False)  # 예: "listen", "speak"
+    image_url = db.Column(db.String(255), nullable=False)  # 캐릭터 이미지 경로
+    description = db.Column(db.Text, nullable=True)  # 캐릭터 설명
+    
+    # Many-to-Many relationship between Character and User
+    users = db.relationship('UserCharacter', backref='character', lazy=True)
+
+class UserCharacter(db.Model):
+    __tablename__ = 'user_character'
+    user_character_id = db.Column(db.String(36), primary_key=True, nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey('user.user_id'), nullable=False)
+    character_id = db.Column(db.String(36), db.ForeignKey('character.character_id'), nullable=False)
+    selected_date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class SocialLogin(db.Model):
     __tablename__ = 'social_login'

@@ -8,7 +8,7 @@ app = create_app()
 
 with app.app_context():
     user_id = "6856f521-3d73-4c18-a8c8-96185a500691"
-    start_date = datetime(2024, 8, 12)
+    start_date = datetime(2024, 8, 24)  # Start from August 24, 2024
     
     # Fetch a topic or create one if none exists
     topic = Topic.query.first()
@@ -22,8 +22,8 @@ with app.app_context():
         db.session.add(topic)
         db.session.commit()
 
-    # Generate data for each day from August 12th, with two entries per day
-    for day in range(10):  # 5 days of data
+    # Generate data for August 24th and 25th
+    for day in range(2):  # For 2 days
         for _ in range(2):  # 2 entries per day
             chat_date = start_date + timedelta(days=day)
             
@@ -33,7 +33,7 @@ with app.app_context():
                 user_id=user_id,
                 chatDate=chat_date,
                 topic_id=topic.topic_id,
-                pronunciation=random.uniform(5.0, 10.0)
+                pronunciation=random.uniform(5.0, 10.0)  # Randomly generate pronunciation score
             )
             db.session.add(ai_chat)
             
@@ -54,4 +54,4 @@ with app.app_context():
     # Commit all changes to the database
     db.session.commit()
 
-    print("Sample AIChat and AIChatTest data generated successfully.")
+    print("Sample AIChat and AIChatTest data for August 24-25, 2024, generated successfully.")

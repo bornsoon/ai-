@@ -1,94 +1,82 @@
 {% extends "base.html" %}
 
-{% block title %}Ai 영어친구{% endblock %}
+{% block title %}Ai 영어친구 - 학습 리포트{% endblock %}
 
 {% block head %}
 <link href="{{ url_for('static', filename='css/myreport.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-
-<div id="avata">
-    <div class="report-top">
-        <div id="myreport-div">|| 학습페이지</div>
-    </div>
-    <div class="report-id">
-        <div id="user-info">
+<div id="report-container" style="overflow-y: auto;">
+    <div id="title_sub"><h2>|| {{ user.nickName | default('Unknown User') }}의 학습 리포트</h2></div>
+    <div class="myreport-score">
+        <div class="user-info">
+            <h2>User Information</h2>
             <table id="userTable">
+                <tr>
+                    <td>아이디</td>
+                    <td>{{ user.id | default('No ID') }}</td>
+                </tr>
+                <tr>
+                    <td>닉네임</td>
+                    <td>{{ user.nickName | default('No Nickname') }}</td>
+                </tr>
+                <tr>
+                    <td>출생년도</td>
+                    <td>{{ user.birth_date.year | default('No Birthdate') }}</td>
+                </tr>
+                <tr>
+                    <td>사용자 분류</td>
+                    <td>{{ user.role | default('No Role') }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="user-character">
+            <h4>현재 레벨: STARTER</h4>
+            <img src="{{ url_for('static', filename='images/characters/starter/ch00_1.gif') }}" id="mycharacter" alt="캐릭터 이미지">
+        </div>
+    </div>
+
+    <!-- Daily Report Section -->
+    <div class="sub">
+        <div class="subtitle">Today</div>
+     </div>
+    <div class="myreport-score">
+        <div class="chart-container">
+            <canvas id="dailyChart"></canvas>
+        </div>
+        <div class="table-container">
+            <span class="table-title">오늘의 평가현황</span>
+            <table id="dailyTable">
                 <thead>
                     <tr>
-                        <th>분류</th>
-                        <th>내용</th>
+                        <th>평가항목</th>
+                        <th>점수</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>아이디</th>
-                        <th>sesackid</th>
-                    </tr>
-                    <tr>
-                        <th>닉네임</th>
-                        <th>영어천재</th>
-                    </tr>
-                    <tr>
-                        <th>출생년도</th>
-                        <th>2015</th>
-                    </tr>
-                    <tr>
-                        <th>그룹</th>
-                        <th>새싹초등학교</th>
-                    </tr>
+                    <!-- Table rows added dynamically -->
                 </tbody>
-                </table>
-        </div>
-        <div id="myavata">
-            <div id="mylebel">
-                레벨 : kid - 2
-            </div> 
-            <div id="myavata-character">
-                <img src="{{ url_for('static', filename='images/ch00-1.gif') }}" alt="아바타 이미지" id="avata-img">
-            </div>
+            </table>
         </div>
     </div>
-    
-    <!-- Daily Report Section -->
-<div class="myreport-score">
-    <div id="mydaily">
-        <div class="container">
-            <div class="chart-container">
-                <canvas id="dailyChart"></canvas>
-            </div>
-            <div class="table-container">
-                <span id="tableTitle">오늘의 평가현황</span>
-                <table id="dailyTable">
-                    <thead>
-                        <tr>
-                            <th>평가항목</th>
-                            <th>점수</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Table rows added dynamically -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
     
     <!-- Weekly Report Section -->
-    <div class="myreport-score">
-        <div id="mytotal">
-            <select id="dataSelector">
-                <option value="week1">2024.08.12-08.16</option>
-                <option value="week2">2024.08.15-08.09</option>
-            </select>
-            <div class="container">
+     <div class="sub">
+        <div class="table-title">주간평가</div>
+        <div id="weekly-selector">
+           <select id="dataSelector">
+               <option value="week1">2024.08.12-08.16</option>
+               <option value="week2">2024.08.15-08.09</option>
+           </select>
+        </div>
+     </div>
+    <div class="myreport-score">            
                 <div class="chart-container">
                     <canvas id="weeklyChart"></canvas>
                 </div>
                 <div class="table-container">
-                    <span id="tableTitle">주간 평가현황</span>
+                    <span class="table-title">주간 평가현황</span>
                     <table id="weeklyTable">
                         <thead>
                             <tr>
@@ -105,8 +93,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
+            
     </div>
     
 </div>

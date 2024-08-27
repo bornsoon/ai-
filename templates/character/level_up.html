@@ -1,0 +1,12 @@
+<!-- app/templates/character/level_up.html -->
+<html>
+<head><title>Character Level Up</title></head>
+<body>
+    <h1>{{ character.name }} - Level {{ character.level }}</h1>
+    <form method="post" action="{{ url_for('level_up_character') }}">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <input type="hidden" name="character_id" value="{{ character.id }}">
+        <button type="submit">Level Up</button>
+    </form>
+</body>
+</html>

@@ -41,6 +41,7 @@
     border: 1px solid gray;
     border-radius: 9px;
     margin-top: 0;
+    margin-bottom: 20px;
     text-align: center; /* 타이틀 중앙 정렬 */
     padding: 10px 0; /* 타이틀 내부 패딩 */
     background-color: #ffffff; /* 타이틀 배경색 */

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Update Profile - Ai 영어친구{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/common.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="content-area">
+    <h2>Update Your Profile</h2>
+    <form id="update-form" method="POST" action="{{ url_for('main.process_update') }}" class="form-style">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.userid.label(class="form-label") }}
+            {{ form.userid(class="form-input", readonly=True) }} <!-- UserID should be immutable -->
+            <small class="form-text text-muted">User IDs cannot be changed.</small>
+        </div>
+        
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-input") }}
+            <small class="form-text text-muted">Enter a new password or repeat the old one to keep it.</small>
+        </div>
+        
+        <div class="form-group">
+            {{ form.confirm_password.label(class="form-label") }}
+            {{ form.confirm_password(class="form-input") }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.nickName.label(class="form-label") }}
+            {{ form.nickName(class="form-input") }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.birth_date.label(class="form-label") }}
+            {{ form.birth_date(class="form-input") }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.gender.label(class="form-label") }}
+            {{ form.gender(class="form-input") }}
+        </div>
+
+        <button type="submit" class="form-button">Update Profile</button>
+    </form>
+</div>
+{% endblock %}

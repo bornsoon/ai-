@@ -57,10 +57,10 @@ def save_ai_test_result(user_id, topic_id, fluency, grammar, vocabulary, content
         print(f"Saving AI test result - User ID: {user_id}, Topic ID: {topic_id}, Fluency: {fluency}, Grammar: {grammar}, Vocabulary: {vocabulary}, Content: {content}, Evaluation: {simple_evaluation}")
 
         if not user_id:
-            user_id = "test_user"
+            user_id = "6856f521-3d73-4c18-a8c8-96185a500691"
         
         if topic_id is None:
-            topic_id = "1"
+            topic_id = "8196329c-5a7d-4371-aa96-a2a3ef6f52a3"
 
         chat_test = AIChatTest(
             chatTest_id=str(uuid.uuid4()),

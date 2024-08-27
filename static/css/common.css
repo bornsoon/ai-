@@ -1,25 +1,31 @@
-/* login.css */
+/* common.css  */
 #content-area {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    min-width: 300px;
+    max-width: 500px;
     width: 100%;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .form-label {
     margin: 10px 0;
 }
 
-.form-input {
+.form-input, .form-button, #check-id-button {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
 
-.form-button {
+.form-button, #check-id-button {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -28,10 +34,6 @@
     cursor: pointer;
 }
 
-.form-button:hover {
+.form-button:hover, #check-id-button:hover {
     background-color: #0056b3;
-}
-
-@media (max-width: 768px) {
-
 }

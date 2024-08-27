@@ -1,0 +1,26 @@
+ <!-- login.html  -->
+{% extends "base.html" %}
+
+{% block title %}Ai 영어친구 - 로그인{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/common.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="content-area">
+    <form method="POST" action="{{ url_for('auth.login') }}">
+        {{ form.hidden_tag() }}
+        <h2>로그인</h2>
+        <div class="form-group">
+            {{ form.userid.label(class="form-label") }}
+            {{ form.userid(class="form-input", placeholder="아이디를 입력하세요") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-input", placeholder="비밀번호를 입력하세요") }}
+        </div>
+        <button type="submit" class="form-button">{{ form.submit.label }}</button>
+    </form>
+</div>
+{% endblock %}

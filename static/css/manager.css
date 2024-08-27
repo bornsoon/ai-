@@ -1,4 +1,4 @@
-#report-container {
+#mypage-container {
     width: 100%;
     margin: 0 auto;
     padding: 20px;
@@ -8,18 +8,9 @@
     overflow-y: auto;
 }
 
-.sub {
-    display: flex;
-    flex-direction: row;
+#title_sub {
     width: 100%;
-    height: 50px;
-    margin: 15px 0;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    justify-content: center;
-    align-items: center;
+
 }
 
 span {
@@ -27,8 +18,34 @@ span {
     margin-bottom: 15px;
 }
 
+button {
+    width: 80px;
+    height: 50p;
+    border: 0;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    margin: 10px 10px 10px 0;
+}
+
+
+.mypage {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    gap: 20px; /* 요소 사이에 20px 간격 */
+    justify-content: space-between;
+}
+
 .myreport-info {
     display: flex;
+    flex-direction: row;
     padding: 15px;
     background-color: white;
     border-radius: 8px;
@@ -60,18 +77,6 @@ span {
     min-width: 300px;
 }
 
-.myreport-score {
-    display: flex;
-    flex-direction: row;
-    padding: 15px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
-    gap: 20px; /* 요소 사이에 20px 간격 */
-    justify-content: space-between;
-}
-
 .chart-container, .table-container {
     width: 48%;
     float: left;
@@ -84,22 +89,10 @@ span {
 
 .chart-container {
     position: relative; /* Relative position for absolute child */
-    height: 350px; /* Ensures there's a height for the chart container */
-}
-
-.table-title {
-    display: flex;
-    margin-bottom: 10px;
-    height: 30px;
+    height: 300px; /* Ensures there's a height for the chart container */
 }
 
 #dailyChart {
-    width: 70%;
-    height: 70%;
-}
-
-#weeklyChart {
-    display: flex;
     width: 100%;
     height: 100%;
 }
@@ -130,17 +123,17 @@ span {
     border: 1px solid #ddd;
 }
 
-#weeklyTable th, #userTable th {
+#userTable th {
     background-color: #f4f4f4;
 }
 
 @media (max-width: 768px) {
-    .myreport-score {
+    .mypage {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    .myreport-info, .user-info, .user-character, .chart-container, .table-container {
+    .mypage-info, .user-info, .user-character, .chart-container {
         flex-direction: column;
         width: 90%;
         justify-content: center;
@@ -149,15 +142,5 @@ span {
 
     .user-character {
         align-items: center;
-    }
-
-    .chart-container, .table-container {
-        width: 90%;
-        float: none;
-    }
-
-    .chart-container {
-        height: auto;
-        min-height: 200px;
     }
 }

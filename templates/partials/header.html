@@ -12,11 +12,15 @@
 <div id="login">
     <ul>
         {% if session.logged_in %}
-            <li><a href="{{ url_for('main.mypage') }}">마이페이지</a></li>
+            {% if session.role == 'manager' or session.role == 'superadmin' %}
+                <li><a href="{{ url_for('main.manager') }}">관리화면</a></li>
+            {% else %}
+                <li><a href="{{ url_for('main.mypage') }}">마이페이지</a></li>
+            {% endif %}
             <li><a href="{{ url_for('main.logout') }}">로그아웃</a></li>
         {% else %}
-            <li><a href="{{ url_for('main.login') }}">로그인</a></li>
-            <li><a href="{{ url_for('main.join') }}">회원가입</a></li>
+            <li><a href="{{ url_for('auth.login') }}">로그인</a></li>
+            <li><a href="{{ url_for('auth.join') }}">회원가입</a></li>
         {% endif %}
     </ul>
 </div>
