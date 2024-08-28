@@ -8,7 +8,7 @@ app = create_app()
 
 with app.app_context():
     user_id = "6856f521-3d73-4c18-a8c8-96185a500691"
-    start_date = datetime(2024, 8, 24)  # Start from August 24, 2024
+    start_date = datetime(2024, 8, 28)  # Start from August 24, 2024
     
     # Fetch a topic or create one if none exists
     topic = Topic.query.first()
@@ -23,8 +23,8 @@ with app.app_context():
         db.session.commit()
 
     # Generate data for August 24th and 25th
-    for day in range(2):  # For 2 days
-        for _ in range(2):  # 2 entries per day
+    for day in range(4):  # For 2 days
+        for _ in range(3):  # 2 entries per day
             chat_date = start_date + timedelta(days=day)
             
             # Generate AIChat data

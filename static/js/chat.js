@@ -1,11 +1,9 @@
-// chat.js
-
 // Track the last placeholders added
 let lastPlaceholders = {};
 
 // Submit form and handle AI response
-async function submitForm() {
-    const userInput = document.getElementById('user-input').value.trim();
+async function submitForm(initialMessage = null) {
+    const userInput = initialMessage || document.getElementById('user-input').value.trim();
     if (!userInput) {
         alert('텍스트를 입력해주세요.');
         return;
@@ -13,6 +11,7 @@ async function submitForm() {
 
     // Get references to placeholders
     lastPlaceholders = displayMessages(userInput, '.....AI 가 생각 중....');
+    console.log('Placeholders after displaying initial message:', lastPlaceholders);
 
     try {
         const response = await fetch('/api/aiChat', {
@@ -34,9 +33,13 @@ async function submitForm() {
             ? data.content 
             : 'AI 응답을 처리하는 중 오류가 발생했습니다.';
 
-        console.log('Extracted assistantMessage:', assistantMessage);
-
-        updateAssistantMessage(assistantMessage);
+        // Ensure placeholders are available before updating
+        if (lastPlaceholders && lastPlaceholders.placeholderInChatting && lastPlaceholders.placeholderInWindow) {
+            console.log('Updating assistant message:', assistantMessage);
+            updateAssistantMessage(assistantMessage);
+        } else {
+            console.warn('No placeholder message element found to update.');
+        }
 
         if (window.speak && document.getElementById('voiceToggle').checked) {
             window.speak(assistantMessage);
@@ -87,6 +90,11 @@ function displayMessages(userInput, assistantMessage) {
     const placeholderMessageForWindow = placeholderMessage.cloneNode(true);
     chattingWindow.appendChild(placeholderMessageForWindow);
     scrollToBottom(chattingWindow);
+
+    console.log('Returning placeholders:', {
+        placeholderInChatting: placeholderMessage,
+        placeholderInWindow: placeholderMessageForWindow
+    });
 
     // Return references to the placeholder elements
     return {

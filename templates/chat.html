@@ -6,6 +6,7 @@
 {% block head %}
 <link href="{{ url_for('static', filename='css/chat.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/setup.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -55,8 +56,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-<script src="{{ url_for('static', filename='js/setup.js') }}"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const startContainer = document.getElementById('start-container');
@@ -64,18 +64,19 @@
         const textWindowButton = document.getElementById('text-window');
         const chatArea = document.getElementById('chat-area');
 
+        // 페이지 로드 시 start.html 자동 노출
+        startContainer.style.display = 'block';
+
         textWindowButton.addEventListener('click', function() {
             chatArea.style.display = (chatArea.style.display === 'none' || chatArea.style.display === '') ? 'block' : 'none';
         });
 
         if (startContainer && setupContainer) {
-            // 'L' 버튼 클릭 시 start.html 설정창 열기
             document.getElementById('listen').addEventListener('click', function() {
                 console.log('L 버튼 클릭됨');
                 startContainer.style.display = 'block';
             });
 
-            // 'S' 버튼 클릭 시 setup.html 설정창 열기/숨기기
             document.getElementById('voiceset').addEventListener('click', function() {
                 if (setupContainer.style.display === 'none' || setupContainer.style.display === '') {
                     setupContainer.style.display = 'block';

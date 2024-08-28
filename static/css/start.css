@@ -110,6 +110,13 @@ button:hover {
     background-color: #1976D2;
 }
 
+#notice-1 {
+    color: orange;
+}
+#notice-2 {
+    color: lightseagreen;
+}
+
 
 @media (max-width: 768px) {
     #start-area {
@@ -130,7 +137,103 @@ button:hover {
     #start-avata {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: center;#start-area {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #start-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #start {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #start-avatar {
+            width: 100px;
+            text-align: center;
+        }
+        
+        #start-img {
+            width: 100%;
+            border-radius: 50%;
+        }
+        
+        #start-table {
+            flex-grow: 1;
+            padding-left: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            text-align: left;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        td {
+            padding-bottom: 10px;
+        }
+        
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        #start-text {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        #area-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button#cancel-button {
+            background-color: #6c757d;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        button#cancel-button:hover {
+            background-color: #5a6268;
+        }
+        
         background-color: #ffffff;
         border-radius: 10px;
     }

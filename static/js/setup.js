@@ -5,7 +5,7 @@ if (window.hasSetupJsLoaded) {
 
     let recognitionInstance;
     let isRecording = false;
-    let timeoutDuration = 10000;
+    let timeoutDuration = 10000; // Default timeout duration
     let inactivityTimer;
 
     function toggleRecognition() {
@@ -45,7 +45,7 @@ if (window.hasSetupJsLoaded) {
                     }
                     console.log('Final transcript:', finalTranscript);
                     document.getElementById('user-input').value = finalTranscript || interimTranscript;
-                }
+                };
 
                 recognitionInstance.onerror = function (event) {
                     let errorMessage = '오류가 발생했습니다: ' + event.error;
@@ -56,7 +56,7 @@ if (window.hasSetupJsLoaded) {
                     }
                     document.getElementById('user-input').value = errorMessage;
                     console.error('Speech recognition error:', event.error);
-                }
+                };
 
                 recognitionInstance.onend = function () {
                     if (isRecording) {
@@ -68,7 +68,7 @@ if (window.hasSetupJsLoaded) {
                             window.submitForm(); // Call submitForm from chat.js
                         }
                     }
-                }
+                };
 
                 recognitionInstance.start();
                 isRecording = true;

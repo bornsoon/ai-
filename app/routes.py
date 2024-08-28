@@ -7,6 +7,7 @@ from app.services.character_service import CharacterService
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.ai_chat import get_response
+from collections import defaultdict
 
 import pyttsx3
 import uuid
@@ -36,7 +37,10 @@ def mypage():
 @main_bp.route('/manager')
 @login_required
 def manager():
-    return render_template('manager.html', user=current_user)
+    students = User.query.all()
+    print(students)
+    print(11111)
+    return render_template('manager.html', user=current_user, students = students)
 
 @main_bp.route('/start')
 def start():
@@ -78,6 +82,19 @@ def process_update():
         return redirect(url_for('main.mypage'))
     else:
         return render_template('update_user.html', form=form)
+    
+@main_bp.route('/delete_user/<string:id>')
+@login_required
+def delete_user_by_id(id):
+    user = User.query.filter_by(id=id).first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        flash(f'User {user.nickName} has been deleted.', 'info')
+    else:
+        flash('User not found or already deleted.', 'danger')
+    
+    return redirect(url_for('main.manager'))
 
 @main_bp.route('/delete_user')
 @login_required
@@ -95,6 +112,21 @@ def delete_user():
     
     flash('Your account has been deleted.', 'info')
     return redirect(url_for('main.index'))
+
+@main_bp.route('/myreport/<string:id>')
+@login_required
+def myreport_by_id(id):
+    # Fetch the user by the provided ID
+    user = User.query.get_or_404(id)
+    
+    # Retrieve the report data for this specific user
+    today = datetime.utcnow()
+    start_of_week = today - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+    
+    # Logic for retrieving the report for the specified user can be added here
+    
+    return render_template('myreport.html', user=user)
 
 @main_bp.route('/myreport')
 @login_required
@@ -143,58 +175,117 @@ def page_not_found(e):
 
 @api_bp.route('/daily_data', methods=['GET'])
 def get_daily_data():
-    user_id = session.get('user')
-    print("Requesting user ID:", user_id)  # Debugging statement
+    user_id = session.get('user_id')
     if user_id:
         date_str = request.args.get('date', datetime.utcnow().strftime('%Y-%m-%d'))
         try:
             date = datetime.strptime(date_str, '%Y-%m-%d')
-            daily_chats = AIChat.query.filter_by(user_id=user_id, chatDate=date).first()
-            if daily_chats:
+            daily_tests = AIChatTest.query.filter_by(user_id=user_id, chatDate=date).all()
+
+            if daily_tests:
+                # 여러 테스트 데이터가 있을 경우 평균 계산
+                fluency_avg = sum(test.fluency for test in daily_tests) / len(daily_tests)
+                grammar_avg = sum(test.grammar for test in daily_tests) / len(daily_tests)
+                vocabulary_avg = sum(test.vocabulary for test in daily_tests) / len(daily_tests)
+                content_avg = sum(test.content for test in daily_tests) / len(daily_tests)
+
                 data = {
-                    'Fluency': daily_chats.fluency,
-                    'Grammar': daily_chats.grammar,
-                    'Vocabulary': daily_chats.vocabulary,
-                    'Content': daily_chats.content,
-                    'Pronunciation': daily_chats.pronunciation
+                    'Fluency': round(fluency_avg, 2),
+                    'Grammar': round(grammar_avg, 2),
+                    'Vocabulary': round(vocabulary_avg, 2),
+                    'Content': round(content_avg, 2),
+                    'Pronunciation': None,  # AIChat에서 데이터를 가져오지 않음
+                    'SimpleEvaluation': daily_tests[0].simpleEvaluation
                 }
-                print("Daily data for user", user_id, "on", date_str, ":", data)  # More detailed debugging
+                print("Daily data:", data)
                 return jsonify(data)
             else:
-                print("No daily data available for user", user_id, "on", date_str)  # Debugging statement
+                print(f"No data found for user {user_id} on {date_str}")
                 return jsonify({'message': 'No data available for this date'}), 404
-        except ValueError:
+        except ValueError as e:
+            print(f"Error parsing date: {e}")
             return jsonify({'error': 'Invalid date format'}), 400
         except Exception as e:
-            logging.error(f'Internal server error: {str(e)}')
+            print(f"Unexpected error: {e}")
             return jsonify({'error': 'Internal Server Error'}), 500
     else:
+        print("User not authenticated")
         return jsonify({'error': 'Authentication required'}), 401
+
 
 @api_bp.route('/week_data', methods=['GET'])
 def get_week_data():
-    user_id = session.get('user')
-    if user_id:
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'error': 'Authentication required'}), 401
+
         start_date_str = request.args.get('start')
         if not start_date_str:
             return jsonify({'error': 'Start date is required'}), 400
-        try:
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
-            end_date = start_date + timedelta(days=6)
-            weekly_chats = AIChat.query.filter(
-                AIChat.user_id == user_id,
-                AIChat.chatDate.between(start_date, end_date)
-            ).all()
-            data = [{'fluency': chat.fluency, 'grammar': chat.grammar, 'vocabulary': chat.vocabulary, 'content': chat.content, 'pronunciation': chat.pronunciation} for chat in weekly_chats]
-            print("Weekly data fetched:", data)  # Debugging statement
-            return jsonify(data)
-        except ValueError:
-            return jsonify({'error': 'Invalid date format'}), 400
-        except Exception as e:
-            logging.error(f'Internal server error: {str(e)}')
-            return jsonify({'error': 'Internal Server Error'}), 500
-    else:
-        return jsonify({'error': 'Authentication required'}), 401
+
+        end_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+        start_date = end_date - timedelta(days=6)
+
+        # Ensure the query does not return None
+        weekly_tests = AIChatTest.query.filter(
+            AIChatTest.user_id == user_id,
+            AIChatTest.chatDate.between(start_date, end_date)
+        ).order_by(AIChatTest.chatDate.desc()).all()
+        
+        if not weekly_tests:
+            return jsonify({'error': 'No data found for this week'}), 404
+
+        daily_data = {}
+        
+        for test in weekly_tests:
+            date_key = test.chatDate.strftime('%Y-%m-%d')
+            # Store the most recent record for each date
+            if date_key not in daily_data:
+                daily_data[date_key] = {
+                    'fluency': test.fluency,
+                    'grammar': test.grammar,
+                    'vocabulary': test.vocabulary,
+                    'content': test.content,
+                    'pronunciation': test.pronunciation if hasattr(test, 'pronunciation') else None
+                }
+
+        week_data = {
+            'labels': [],
+            'scores': []
+        }
+
+        for i in range(7):
+            current_date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+            if current_date in daily_data:
+                week_data['labels'].append(current_date)
+                week_data['scores'].append({
+                    'fluency': round(daily_data[current_date]['fluency'], 2),
+                    'grammar': round(daily_data[current_date]['grammar'], 2),
+                    'vocabulary': round(daily_data[current_date]['vocabulary'], 2),
+                    'content': round(daily_data[current_date]['content'], 2),
+                    'pronunciation': round(daily_data[current_date]['pronunciation'], 2) if daily_data[current_date]['pronunciation'] is not None else 0
+                })
+            else:
+                week_data['labels'].append(current_date)
+                week_data['scores'].append({
+                    'fluency': 0.0,
+                    'grammar': 0.0,
+                    'vocabulary': 0.0,
+                    'content': 0.0,
+                    'pronunciation': 0.0
+                })
+
+        print("Weekly data:", week_data)
+        return jsonify(week_data)
+
+    except ValueError as e:
+        print(f"Error parsing date: {e}")
+        return jsonify({'error': 'Invalid date format'}), 400
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return jsonify({'error': 'Internal Server Error', 'message': str(e)}), 500
+
 
 @api_bp.route('/aiChat', methods=['POST'])
 def ai_query():

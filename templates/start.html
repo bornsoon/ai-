@@ -10,31 +10,27 @@
     <div id="start-area">
         <div id="start-title">설정 후 대화하기</div>
         <div id="start">
-            <div id="start-avata">
+            <div id="start-avatar">
                 <img src="{{ url_for('static', filename='images/ch00-2.gif') }}" alt="아바타 이미지" id="start-img">
             </div>
             <div id="start-table">
                 <table>
                     <tr>
-                        <th>캐릭터</th>
-                        <td>
-                            <select id="user-select">
-                                <option value="student">Student</option>
-                                <option value="teacher">Teacher</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>AI 캐릭터</th>
-                        <td>
-                            <select id="ai-select">
-                                <option value="friendly">Friendly AI</option>
-                                <option value="strict">Strict AI</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
                         <th>상황 설정</th>
+                        <td>
+                            <select id="situation-select">
+                                <option value="Ordering food at a restaurant">at a restaurant</option>
+                                <option value="Asking for directions in a new city">Asking for directions</option>
+                                <option value="Making small talk with a stranger at a party">at a party</option>
+                                <option value="Discussing weekend plans with friends">weekend plans</option>
+                                <option value="Buying tickets at a movie theater">a movie theater</option>
+                                <option value="Describing symptoms to a doctor">at the hospital</option>
+                                <option value="Haggling at a flea market">flea market</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상황 입력</th>
                         <td>
                             <input type="text" id="situation-input" placeholder="상황을 입력하세요">
                         </td>
@@ -55,7 +51,9 @@
 
         <div id="start-text">
             [시작] 버튼을 눌러 학습을 시작하세요<div class="br">
-                [취소]버튼 클릭시 현재 설정을 유지합니다.
+                [취소] 버튼 클릭 시 현재 설정을 유지합니다. <br>
+               <span id="notice-1">* 선택된 설정보다 '입력된 상황'이 우선 적용됩니다.</span> <br>
+               <span id="notice-2">* 설정은 한글입력도 가능합니다.</span> 
             </div>
         </div>
         <div id="area-button">
@@ -65,18 +63,41 @@
     </div>
 
     <script>
-        document.getElementById('start-first').addEventListener('click', function() {
-            const situation = document.getElementById('situation-input').value;
-            localStorage.setItem('situation', situation);
-
-            // start-container 숨기기
-            parent.document.getElementById('start-container').style.display = 'none';
-        });
-
-        document.getElementById('cancel-button').addEventListener('click', function() {
-            // start-container 숨기기
-            parent.document.getElementById('start-container').style.display = 'none';
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const startButton = document.getElementById('start-first');
+            const cancelButton = document.getElementById('cancel-button');
+        
+            startButton.addEventListener('click', function() {
+                const situationSelect = document.getElementById('situation-select').value;
+                const situationInput = document.getElementById('situation-input').value;
+                const difficulty = document.getElementById('difficulty-select').value;
+        
+                const situation = situationInput || situationSelect;
+                const userInput = `In situation ${situation}, the difficulty is set to ${difficulty}. Please ask a question in English.`;
+        
+                console.log('Submitting initial question to AI:', userInput);
+        
+                // 부모 창의 입력창에 텍스트를 설정하고 폼을 제출하여 AI와의 대화 시작
+                const parentInputElement = parent.document.getElementById('user-input');
+                if (parentInputElement) {
+                    parentInputElement.value = userInput;
+                    parent.window.submitForm(userInput); // input 창을 통해 처리와 동일하게 submitForm 호출
+                } else {
+                    console.warn('Input element not found in parent window.');
+                }
+        
+                // 팝업 닫기
+                parent.document.getElementById('start-container').style.display = 'none';
+            });
+        
+            cancelButton.addEventListener('click', function() {
+                parent.document.getElementById('start-container').style.display = 'none';
+            });
+        });        
+        
     </script>
+    
+    
+    
 </body>
 </html>
