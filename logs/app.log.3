@@ -1,6 +1,0 @@
-2024-08-28 14:55:02,018 INFO: User logged in: abc1234 [in /home/star/project/AiFriend/app/auth/routes.py:72]
-2024-08-28 15:11:31,301 ERROR: Failed to save AI test result: (pymysql.err.IntegrityError) (1452, 'Cannot add or update a child row: a foreign key constraint fails (`aifriend`.`ai_chat_test`, CONSTRAINT `ai_chat_test_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`))')
-[SQL: INSERT INTO ai_chat_test (`chatTest_id`, user_id, `chatDate`, topic_id, fluency, grammar, vocabulary, content, `simpleEvaluation`) VALUES (%(chatTest_id)s, %(user_id)s, %(chatDate)s, %(topic_id)s, %(fluency)s, %(grammar)s, %(vocabulary)s, %(content)s, %(simpleEvaluation)s)]
-[parameters: {'chatTest_id': 'cb5c2b25-5cbb-4dff-af60-7bd83e17a051', 'user_id': '6856f521-3d73-4c18-a8c8-96185a500691', 'chatDate': datetime.datetime(2024, 8, 28, 6, 11, 31, 284439), 'topic_id': '8196329c-5a7d-4371-aa96-a2a3ef6f52a3', 'fluency': 4, 'grammar': 5, 'vocabulary': 3, 'content': 6, 'simpleEvaluation': "You're doing great."}]
-(Background on this error at: https://sqlalche.me/e/20/gkpj) [in /home/star/project/AiFriend/app/ai_chat.py:82]
-2024-08-28 15:11:31,301 ERROR: Failed to save the test result to the database, but proceeding to send the response. [in /home/star/project/AiFriend/app/ai_chat.py:138]

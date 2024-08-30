@@ -5,14 +5,26 @@
 *.bak
 *.db
 *.sql
-# dbConfig.js
+
+# 로그 파일 및 관련 파일 무시
+logs/
+*.log
+*.log.*
+
+# Python 컴파일된 파일 무시
+*.py[cod]
+__pycache__/
+*.cpython-*
+
+# 기타 임시 파일 무시
+*.tmp
+*.bak
+*.swp
 
 ## 폴더
-# images/
-__pycache__/
 node_modules/
 bin/
 tests/
 uploads/
-logs/
-# config/
+images/
+img/
