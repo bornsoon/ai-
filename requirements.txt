@@ -1,8 +1,0 @@
-numpy==1.26.4
-Flask==3.0.3
-Flask-Cors==3.0.3
-# whisper==1.16.0 # openAi 음성처리 라이브러리
-# SpeechRecognition==3.10.4 # python 음성처리
-# pyttsx3==2.90
-# PyAudio==0.2.14
-# test

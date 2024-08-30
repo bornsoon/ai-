@@ -24,7 +24,7 @@
 
 span {
     height: 20px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .myreport-info {
@@ -84,13 +84,46 @@ span {
 
 .chart-container {
     position: relative; /* Relative position for absolute child */
-    height: 350px; /* Ensures there's a height for the chart container */
+    height: 400px; /* Ensures there's a height for the chart container */
 }
 
 .table-title {
     display: flex;
-    margin-bottom: 10px;
-    height: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 10px 0; /* 상하 여백 추가 */
+    font-size: 1.2em; /* 글자 크기 조정 */
+    font-weight: bold; /* 글자 굵기 설정 */
+}
+
+.legend-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.legend-table th, .legend-table td {
+    padding: 0px;
+    text-align: left;
+    vertical-align: middle; /* 세로 정렬을 중간으로 설정 */
+}
+
+.legend-table th {
+    height: 15px;
+    vertical-align: top;
+}
+
+.color-box {
+    width: 30px;
+    height: 10px;
+    display: inline-block;
+    margin-right: 0px 0px 0px 0px;
+    vertical-align: bottom; /* 색상 박스를 중간으로 정렬 */
+}
+
+#weekly-selector {
+    margin: 0 20px;
 }
 
 #dailyChart {

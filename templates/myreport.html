@@ -39,7 +39,7 @@
 
     <!-- Daily Report Section -->
     <div class="sub">
-        <div class="subtitle">Today</div>
+        <div class="table-title">일간평가</div>
      </div>
     <div class="myreport-score">
         <div class="chart-container">
@@ -58,15 +58,39 @@
                     <!-- Table rows added dynamically -->
                 </tbody>
             </table>
+            <!-- 도넛 색상 설명 테이블 -->
+            <table class="legend-table">
+                <tbody>
+                    <tr>
+                        <td><span class="color-box" style="background-color: #FF6384;"></span></td>
+                        <td>Fluency</td>
+                        <td><span class="color-box" style="background-color: #36A2EB;"></span></td>
+                        <td>Grammar</td>
+                        <td><span class="color-box" style="background-color: #FFCE56;"></span></td>
+                        <td>Vocabulary</td>
+                    </tr>
+                    <tr>
+                        <td><span class="color-box" style="background-color: #4BC0C0;"></span></td>
+                        <td>Content</td>
+                        <td><span class="color-box" style="background-color: #9966FF;"></span></td>
+                        <td>Pronunciation</td>
+                        <td></span></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     
     <!-- Weekly Report Section -->
     <div class="sub">
-        <div class="table-title">주간평가</div>
-        <div id="weekly-selector">
-            <input type="date" id="dateSelector">
+        <div class="table-title">
+            주간평가
+            <div id="weekly-selector">
+                <input type="date" id="dateSelector">
+            </div>
         </div>
+
     </div>
     <div class="myreport-score">            
                 <div class="chart-container">

@@ -32,8 +32,14 @@
                     <td>{{ user.role | default('No Role') }}</td>
                 </tr>
             </table>
-            <button onclick="location.href='{{ url_for('main.update_user') }}'">정보변경</button>
-            <button onclick="if(confirm('정말로 탈퇴하시겠습니까?')) location.href='{{ url_for('main.delete_user') }}'">탈퇴</button>
+            <table>
+                <tr>
+                    <td>
+                        <button onclick="location.href='{{ url_for('main.update_user') }}'">정보변경</button>
+                        <button onclick="if(confirm('정말로 탈퇴하시겠습니까?')) location.href='{{ url_for('main.delete_user') }}'">탈퇴</button>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="user-character">
             <h3>현재 레벨: STARTER</h3>
