@@ -2,6 +2,6 @@
 
 from flask import Blueprint
 
-auth_bp = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
+auth_bp = Blueprint('auth', __name__, template_folder='templates', static_folder='static', url_prefix='/ai')
 
 from app.auth import routes
