@@ -27,4 +27,8 @@ bin/
 tests/
 uploads/
 images/
+<<<<<<< HEAD
 img/
+=======
+img/
+>>>>>>> 6ea00496ee9f5355e152860326f290d0f10cfb8c
