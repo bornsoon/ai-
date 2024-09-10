@@ -1,4 +1,10 @@
 .gitattributes
 
+# 모든 텍스트 파일을 LF로 통일
+* text=auto
+
+# 특정 파일 확장자는 CRLF 유지
+*.bat text eol=crlf
+*.sh text eol=lf
 *.py text eol=lf
 *.md text eol=lf

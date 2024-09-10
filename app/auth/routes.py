@@ -29,7 +29,7 @@ def join():
                 password=generate_password_hash(password),
                 nickName=nickname,
                 birth_date=birth_date,
-                role="student",
+                role="user",
                 socialLogin=False,
                 gender=gender
             )
@@ -56,17 +56,23 @@ def login():
         userid = form.userid.data
         password = form.password.data
         
+        # User 테이블에서 로그인한 사용자 정보 조회
         user = User.query.filter_by(id=userid).first()
         
         if user and check_password_hash(user.password, password):
+            # 로그인 성공 시 사용자 정보를 session에 저장
             login_user(user)
             
-            # 세션에 사용자 정보 저장
+            # 사용자 정보 세션에 저장
             session['logged_in'] = True
             session['id'] = user.id
-            session['user_id'] = user.user_id
+            session['user_id'] = user.user_id  # user_id를 session에 저장 (userUuid로 사용)
             session['nickname'] = user.nickName
             session['role'] = user.role
+            
+            # 추가적으로 birth_year와 gender 정보를 session에 저장
+            session['birth_year'] = user.birth_date.year  # 생년월일의 연도만 저장
+            session['gender'] = user.gender
             
             flash('로그인 성공!', 'success')
             logger.info(f'User logged in: {userid}')

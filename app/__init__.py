@@ -1,4 +1,4 @@
-# app/__init__.py
+#  app/__init__.py
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -9,6 +9,7 @@ from datetime import timedelta
 import os
 import logging
 from logging.handlers import RotatingFileHandler
+from pymongo import MongoClient
 
 # Import custom configuration
 from dbconfig import Config
@@ -21,6 +22,12 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY')
     app.config.from_object(Config)
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+    app.config['ETRI_KEY'] = os.getenv('ETRI_KEY')
+    
+    # Initialize MongoDB
+    mongo_uri = "mongodb://localhost:27017/"
+    client = MongoClient(mongo_uri)
+    app.db = client.aifriend 
     
     # Initialize the database
     db.init_app(app)

@@ -1,14 +1,13 @@
 #  app/routes.py
-from flask import Blueprint, request, jsonify, send_file, render_template, session, redirect, url_for, flash
-from app.models import User, AIChat, AIChatTest, db
-from app.audio_processing import transcribe_audio
+from flask import Blueprint, request, jsonify, send_file, render_template, session, redirect, url_for, flash, current_app
+from app.models import User, AIChatTest, db
 from flask_login import login_required, current_user, logout_user
 from app.services.character_service import CharacterService
+from app.services.speech_service import SpeechService  # SpeechService import
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.ai_chat import get_response
 from collections import defaultdict
-
 import pyttsx3
 import uuid
 
@@ -177,39 +176,52 @@ def page_not_found(e):
 def get_daily_data():
     user_id = session.get('user_id')
     if user_id:
-        date_str = request.args.get('date', datetime.utcnow().strftime('%Y-%m-%d'))
+        # 오늘 날짜를 기준으로 데이터를 전달
+        today = datetime.utcnow().date()
         try:
-            date = datetime.strptime(date_str, '%Y-%m-%d')
-            daily_tests = AIChatTest.query.filter_by(user_id=user_id, chatDate=date).all()
+            start_of_day = datetime.combine(today, datetime.min.time())
+            end_of_day = datetime.combine(today, datetime.max.time())
 
-            if daily_tests:
-                # 여러 테스트 데이터가 있을 경우 평균 계산
-                fluency_avg = sum(test.fluency for test in daily_tests) / len(daily_tests)
-                grammar_avg = sum(test.grammar for test in daily_tests) / len(daily_tests)
-                vocabulary_avg = sum(test.vocabulary for test in daily_tests) / len(daily_tests)
-                content_avg = sum(test.content for test in daily_tests) / len(daily_tests)
+            # 날짜 범위를 기준으로 필터링
+            print(f"Fetching daily data for user {user_id} from {start_of_day} to {end_of_day}")
+            daily_tests = AIChatTest.query.filter(
+                AIChatTest.user_id == user_id,
+                AIChatTest.chatDate.between(start_of_day, end_of_day)
+            ).all()
 
-                data = {
-                    'Fluency': round(fluency_avg, 2),
-                    'Grammar': round(grammar_avg, 2),
-                    'Vocabulary': round(vocabulary_avg, 2),
-                    'Content': round(content_avg, 2),
-                    'Pronunciation': None,  # AIChat에서 데이터를 가져오지 않음
-                    'SimpleEvaluation': daily_tests[0].simpleEvaluation
-                }
-                print("Daily data:", data)
-                return jsonify(data)
-            else:
-                print(f"No data found for user {user_id} on {date_str}")
-                return jsonify({'message': 'No data available for this date'}), 404
-        except ValueError as e:
-            print(f"Error parsing date: {e}")
-            return jsonify({'error': 'Invalid date format'}), 400
+            # 데이터가 있는지 확인
+            if not daily_tests:
+                print(f"No data available for {today}")
+                return jsonify({'message': 'No data available for today'}), 404
+
+            # 필터링된 값만 평균 계산
+            def calculate_avg(attribute):
+                filtered_values = [getattr(test, attribute) for test in daily_tests if getattr(test, attribute) not in [None, 0]]
+                return sum(filtered_values) / len(filtered_values) if filtered_values else None
+
+            fluency_avg = calculate_avg('fluency')
+            grammar_avg = calculate_avg('grammar')
+            vocabulary_avg = calculate_avg('vocabulary')
+            content_avg = calculate_avg('content')
+
+            # 응답 데이터
+            data = {
+                'Fluency': round(fluency_avg, 2) if fluency_avg is not None else None,
+                'Grammar': round(grammar_avg, 2) if grammar_avg is not None else None,
+                'Vocabulary': round(vocabulary_avg, 2) if vocabulary_avg is not None else None,
+                'Content': round(content_avg, 2) if content_avg is not None else None,
+                'Pronunciation': None,  # Pronunciation 데이터가 없으므로 기본값을 None으로 설정
+                'SimpleEvaluation': daily_tests[0].simpleEvaluation if daily_tests else None
+            }
+
+            print(f"Daily data for {today}: {data}")
+            return jsonify(data)
+
         except Exception as e:
-            print(f"Unexpected error: {e}")
-            return jsonify({'error': 'Internal Server Error'}), 500
+            # 디버깅을 위한 상세 에러 메시지 출력
+            print(f"Error fetching daily data: {e}")
+            return jsonify({'error': 'Internal Server Error', 'message': str(e)}), 500
     else:
-        print("User not authenticated")
         return jsonify({'error': 'Authentication required'}), 401
 
 
@@ -227,28 +239,24 @@ def get_week_data():
         end_date = datetime.strptime(start_date_str, '%Y-%m-%d')
         start_date = end_date - timedelta(days=6)
 
-        # Ensure the query does not return None
         weekly_tests = AIChatTest.query.filter(
             AIChatTest.user_id == user_id,
             AIChatTest.chatDate.between(start_date, end_date)
         ).order_by(AIChatTest.chatDate.desc()).all()
-        
+
         if not weekly_tests:
             return jsonify({'error': 'No data found for this week'}), 404
 
         daily_data = {}
-        
         for test in weekly_tests:
             date_key = test.chatDate.strftime('%Y-%m-%d')
-            # Store the most recent record for each date
-            if date_key not in daily_data:
-                daily_data[date_key] = {
-                    'fluency': test.fluency,
-                    'grammar': test.grammar,
-                    'vocabulary': test.vocabulary,
-                    'content': test.content,
-                    'pronunciation': test.pronunciation if hasattr(test, 'pronunciation') else None
-                }
+            daily_data[date_key] = {
+                'fluency': test.fluency or 0,
+                'grammar': test.grammar or 0,
+                'vocabulary': test.vocabulary or 0,
+                'content': test.content or 0,
+                'pronunciation': test.pronunciation if hasattr(test, 'pronunciation') else 0
+            }
 
         week_data = {
             'labels': [],
@@ -264,7 +272,7 @@ def get_week_data():
                     'grammar': round(daily_data[current_date]['grammar'], 2),
                     'vocabulary': round(daily_data[current_date]['vocabulary'], 2),
                     'content': round(daily_data[current_date]['content'], 2),
-                    'pronunciation': round(daily_data[current_date]['pronunciation'], 2) if daily_data[current_date]['pronunciation'] is not None else 0
+                    'pronunciation': round(daily_data[current_date]['pronunciation'], 2)
                 })
             else:
                 week_data['labels'].append(current_date)
@@ -276,8 +284,13 @@ def get_week_data():
                     'pronunciation': 0.0
                 })
 
-        print("Weekly data:", week_data)
         return jsonify(week_data)
+
+    except ValueError as e:
+        return jsonify({'error': 'Invalid date format'}), 400
+    except Exception as e:
+        return jsonify({'error': 'Internal Server Error', 'message': str(e)}), 500
+
 
     except ValueError as e:
         print(f"Error parsing date: {e}")
@@ -285,6 +298,35 @@ def get_week_data():
     except Exception as e:
         print(f"Unexpected error: {e}")
         return jsonify({'error': 'Internal Server Error', 'message': str(e)}), 500
+    
+@main_bp.route('/evaluate_pronunciation', methods=['POST'])
+def evaluate_pronunciation():
+    # ETRI_KEY가 제대로 로드되었는지 확인
+    etri_key = current_app.config.get('ETRI_KEY')
+    if not etri_key:
+        return jsonify({"error": "ETRI_KEY not found"}), 500
+
+    print(f"Loaded ETRI_KEY: {etri_key}")  # 환경 변수 확인
+
+    if 'audio_file' not in request.files or 'script' not in request.form:
+        return jsonify({"error": "Audio file and script are required."}), 400
+
+    audio_file = request.files['audio_file']
+    script = request.form.get('script', '')
+    language_code = request.form.get('language_code', 'english')
+
+    # 파일 저장
+    audio_file_path = f'static/uploads/{audio_file.filename}'
+    audio_file.save(audio_file_path)
+
+    # 발음 평가 API 호출
+    speech_service = SpeechService(access_key=etri_key)  # ETRI_KEY 전달
+    result = speech_service.evaluate_pronunciation(audio_file_path, language_code, script)
+    
+    # API 응답을 서버 콘솔에 출력
+    print("Pronunciation Evaluation Result:", result)
+    
+    return jsonify(result)
 
 
 @api_bp.route('/aiChat', methods=['POST'])

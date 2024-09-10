@@ -75,21 +75,21 @@ class AIChat(db.Model):
     __tablename__ = 'ai_chat'
     chat_id = db.Column(db.String(36), primary_key=True, nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('user.user_id'), nullable=False)
-    chatDate = db.Column(db.Date, nullable=False)
+    chatDate = db.Column(db.DateTime, nullable=False)  # 기존 db.Date에서 db.DateTime으로 변경
     topic_id = db.Column(db.String(36), db.ForeignKey('topic.topic_id'), nullable=False)
-    pronunciation = db.Column(db.Float)  # 음성평가 항목만 남김
+    pronunciation = db.Column(db.Float)
 
 class AIChatTest(db.Model):
     __tablename__ = 'ai_chat_test'
     chatTest_id = db.Column(db.String(36), primary_key=True, nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('user.user_id'), nullable=False)
-    chatDate = db.Column(db.Date, nullable=False)
+    chatDate = db.Column(db.DateTime, nullable=False)  # 기존 db.Date에서 db.DateTime으로 변경
     topic_id = db.Column(db.String(36), db.ForeignKey('topic.topic_id'), nullable=False)
     fluency = db.Column(db.Float)
     grammar = db.Column(db.Float)
     vocabulary = db.Column(db.Float)
-    content = db.Column(db.Float) 
-    simpleEvaluation = db.Column(db.String(255)) 
+    content = db.Column(db.Float)
+    simpleEvaluation = db.Column(db.Text)
 
 class AIChatTestContent(db.Model):
     __tablename__ = 'ai_chat_test_content'
