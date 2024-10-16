@@ -179,9 +179,14 @@ def character_list():
     return render_template('character_list.html', characters=characters)
 
 @main_bp.route('/character/type/<type>')
-def character_list(type):
-    character = Character.query.filter_by(type = type).all()
-    return render_template('character_list.html', character=character)
+def character_type(type):
+    character = db.session.query(
+                            Character.type,
+                            func.min(func.date(Character.register)).label('first_registered'),
+                            func.max(func.date(Character.update)).label('last_update')
+                            ).filter_by(type = type).group_by(Character.type).one()
+    print(character)
+    return render_template('character_detail.html', character=character)
 
 @main_bp.route('/character/level_up', methods=['POST'])
 def level_up_character():

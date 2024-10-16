@@ -15,7 +15,7 @@
         <div class="user-info" style="width: 25%">
             <h2>Preview</h2>
             <img src="{{ url_for('static', filename='images/characters/starter/ch00_1.gif') }}" id="mycharacter" alt="캐릭터 이미지">
-            <h3>현재 레벨: MANAGER</h3>
+            <h3>현재 레벨: KID 6</h3>
         </div>
         <div class="user-character" style="width: 75%">
             <table id="userTable">
@@ -25,6 +25,7 @@
                     <th>등록일</th>
                     <th>최종 업데이트</th>
                     <th>상세보기</th>
+                    <th>미리보기</th>
                 </tr>
                 {% for i in characters %}
                     <tr>
@@ -32,7 +33,8 @@
                         <td>{{ i.type }}</td>
                         <td>{{ i.first_registered }}</td>
                         <td>{{ i.last_update }}</td>
-                        <td><button onclick="location.href='{{ url_for('main.character_list') }}'">바로가기</button></td>
+                        <td><button onclick="location.href='{{ url_for('main.character_type', type=i.type) }}'">바로가기</button></td>
+                        <td><button onclick="changeImg('{{ i.type }}')">미리보기</button></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -44,4 +46,10 @@
 <p>Please log in to view this page.</p>
 {% endif %}
 
+<script>
+    function changeImg(type){
+        const url = `images/characters/${type}/kid/6-basic.png`;
+        document.getElementById('mycharacter').src = '{{ url_for("static", filename="") }}' + url;;
+    }
+</script>
 {% endblock %}
