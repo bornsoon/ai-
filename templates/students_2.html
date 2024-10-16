@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Ai 영어친구{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/students.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div id="avata">
+    <div>
+        <div id="students-div">|| 학생 관리 페이지</div>
+    </div>
+    
+    <!-- user 현황 테이블 -->
+    <div class="container">
+        <div class="table-container">
+            <span id="tableTitle">학생 상세 정보</span>
+            <table id="studentsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>이름</th>
+                        <th>생년월일</th>
+                        <th>등급</th>
+                        <th>학습현황 페이지</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>abc1234</td>
+                        <td>박수현</td>
+                        <td>1990년 01월 01일</td>
+                        <td>학생</td>
+                        <td><a href="/ai/myreport">바로가기</a></td>
+                    </tr>
+                    <tr>
+                        <td>dba1234</td>
+                        <td>황조현</td>
+                        <td>1992년 02월 02일</td>
+                        <td>학생</td>
+                        <td><a href="/ai/myreport">바로가기</a></td>
+                    </tr>
+                    <tr>
+                        <td>abc1234</td>
+                        <td>박수형</td>
+                        <td>1990년 01월 01일</td>
+                        <td>학생</td>
+                        <td><a href="/ai/myreport">바로가기</a></td>
+                    </tr>
+                    <tr>
+                        <td>dba1234</td>
+                        <td>황조현</td>
+                        <td>1992년 02월 02일</td>
+                        <td>학생</td>
+                        <td><a href="/ai/myreport">바로가기</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagination">
+        <ul>
+            <li><a href="/ai/students/1">1</a></li>
+            <li class="active"><a href="/ai/students/2">2</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

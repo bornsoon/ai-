@@ -1,0 +1,67 @@
+#avata {
+    flex: 1;
+    padding-top: 150px;
+    background-color: #e9ecef;
+    padding: 20px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#students-div {
+    display: flex;
+    width: 48%;
+    height: 40px;
+    padding-left: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    border-top: 2px solid #007bff;
+}
+
+.table-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pagination ul{
+    list-style: none;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.pagination .active{
+    font-weight: 700;
+}
+
+#studentsTable {
+    width: 100%;
+    height: 100%;
+    background-color: beige;
+}
+
+#tableTitle {
+    display: flex;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 30px;
+    font-weight: 900;
+    background-color: blanchedalmond;
+    justify-content: center;
+}
+
+#Table th, td {
+    text-align: center;
+    padding-block: 10px;
+}

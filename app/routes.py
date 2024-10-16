@@ -1,6 +1,6 @@
 #  app/routes.py
 from flask import Blueprint, request, jsonify, send_file, render_template, session, redirect, url_for, flash, current_app
-from app.models import User, AIChatTest, db
+from app.models import User, AIChatTest, db, Character
 from flask_login import login_required, current_user, logout_user
 from app.services.character_service import CharacterService
 from app.services.speech_service import SpeechService  # SpeechService import
@@ -10,6 +10,7 @@ from app.ai_chat import get_response
 from collections import defaultdict
 import pyttsx3
 import uuid
+from sqlalchemy import func
 
 main_bp = Blueprint('main', __name__, url_prefix='/ai')
 api_bp = Blueprint('api', __name__, url_prefix='/api')
@@ -37,8 +38,6 @@ def mypage():
 @login_required
 def manager():
     students = User.query.all()
-    print(students)
-    print(11111)
     return render_template('manager.html', user=current_user, students = students)
 
 @main_bp.route('/start')
@@ -112,6 +111,15 @@ def delete_user():
     flash('Your account has been deleted.', 'info')
     return redirect(url_for('main.index'))
 
+# 관리자도 접근 가능한 커스텀 데코레이터
+# def admin_or_login_required(f):
+#     @login_required
+#     def wrapper(*args, **kwargs):
+#         if current_user.is_authenticated and (current_user.is_admin or current_user.is_superuser):
+#             return f(*args, **kwargs)
+#         return redirect(url_for('error'))  # 접근 금지 페이지로 리디렉션
+#     return wrapper
+
 @main_bp.route('/myreport/<string:id>')
 @login_required
 def myreport_by_id(id):
@@ -152,6 +160,28 @@ def api_login():
     else:
         flash('Login failed. Please try again.', 'danger')
         return redirect(url_for('auth.login'))
+
+@main_bp.route('/character')
+def character_list():
+    # characters = Character.query.all()
+    subquery = db.session.query(
+                            Character.type,
+                            func.min(func.date(Character.register)).label('first_registered'),
+                            func.max(func.date(Character.update)).label('last_update')
+                            ).group_by(Character.type).subquery()
+
+    characters = db.session.query(
+                            func.row_number().over(order_by=subquery.c.type).label('row_number'),
+                            subquery.c.type,
+                            subquery.c.first_registered,
+                            subquery.c.last_update
+                            ).all()
+    return render_template('character_list.html', characters=characters)
+
+@main_bp.route('/character/type/<type>')
+def character_list(type):
+    character = Character.query.filter_by(type = type).all()
+    return render_template('character_list.html', character=character)
 
 @main_bp.route('/character/level_up', methods=['POST'])
 def level_up_character():

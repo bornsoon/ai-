@@ -36,10 +36,13 @@ class UserLevel(db.Model):
 class Character(db.Model):
     __tablename__ = 'character'
     character_id = db.Column(db.String(36), primary_key=True, nullable=False)
+    type = db.Column(db.String(50), nullable=False)
+    classes = db.Column('class', db.String(50), nullable=False)
     level_code = db.Column(db.String(10), nullable=False)  # 예: K1, A1 등
     action_type = db.Column(db.String(50), nullable=False)  # 예: "listen", "speak"
     image_url = db.Column(db.String(255), nullable=False)  # 캐릭터 이미지 경로
-    description = db.Column(db.Text, nullable=True)  # 캐릭터 설명
+    register = db.Column(db.DateTime, default=datetime.utcnow)
+    update = db.Column(db.DateTime, nullable=True)
     
     # Many-to-Many relationship between Character and User
     users = db.relationship('UserCharacter', backref='character', lazy=True)

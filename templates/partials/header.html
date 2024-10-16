@@ -4,9 +4,18 @@
 <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
 <div id="navi">
     <ul>
-        <li><a href="{{ url_for('main.chat') }}">영어대화</a></li>
-        <li><a href="{{ url_for('main.aitest') }}">평가해보기</a></li>
-        <li><a href="{{ url_for('main.myreport') }}">학습현황</a></li>
+        {% if session.logged_in %}
+            {% if session.role == 'manager' or session.role == 'superadmin' %}
+                <li><a href="{{ url_for('main.manager') }}">회원관리</a></li>
+                <li><a href="{{ url_for('main.manager') }}">그룹관리</a></li>
+                <li><a href="{{ url_for('main.character_list') }}">캐릭터관리</a></li>
+                <li><a href="{{ url_for('main.manager') }}">데이터관리</a></li>
+            {% else %}
+                <li><a href="{{ url_for('main.chat') }}">영어대화</a></li>
+                <li><a href="{{ url_for('main.aitest') }}">평가해보기</a></li>
+                <li><a href="{{ url_for('main.myreport') }}">학습현황</a></li>
+            {% endif %}
+        {% endif %}
     </ul>
 </div>
 <div id="login">
