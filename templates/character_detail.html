@@ -28,8 +28,8 @@
                 </tr>
                 <tr>
                     <td>{{ character.type }}</td>
-                    <td>KID 레벨</td>
-                    <td>ADULT 레벨</td>
+                    <td>{{ kid_count }}</td>
+                    <td>{{ adult_count }}</td>
                     <td>{{ character.first_registered }}</td>
                     <td>{{ character.last_update }}</td>
                 </tr>
@@ -59,6 +59,7 @@
                 </tr>
             </table>
             <button onclick="location.href='{{ url_for('main.character_list') }}'" style="width: 200px">리스트로 돌아가기</button>
+            <button onclick="registerCharacter()">등록하기</button>
         </div>  
     </div>
     
@@ -85,9 +86,14 @@
         document.getElementById('speak').textContent = url4;
     }
 
-    function changeImg(level, mode){
-        const url = `images/characters/{{ character.type }}/${level}/6-${mode}.png`;
+    function changeImg(level, action){
+        const url = `images/characters/{{ character.type }}/${level}/6-${action}.png`;
         document.getElementById('mycharacter').src = '{{ url_for("static", filename="") }}' + url;;
+    }
+
+    function registerCharacter() {
+        const url = "{{ url_for('main.character_register', type=character.type) }}";
+        location.href = url;
     }
 </script>
 {% endblock %}

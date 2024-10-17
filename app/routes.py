@@ -185,8 +185,44 @@ def character_type(type):
                             func.min(func.date(Character.register)).label('first_registered'),
                             func.max(func.date(Character.update)).label('last_update')
                             ).filter_by(type = type).group_by(Character.type).one()
-    print(character)
-    return render_template('character_detail.html', character=character)
+    kid_count = db.session.query(func.count(Character.type)).filter_by(type=type, classes='kid').scalar()
+    adult_count = db.session.query(func.count(Character.type)).filter_by(type=type, classes='adult').scalar()
+    return render_template('character_detail.html', character=character, kid_count=kid_count, adult_count=adult_count)
+
+@main_bp.route('/character/register/<type>', methods=['GET', 'POST'])
+def character_register(type):
+    level = 'kid'
+    action = 'basic'
+    if request.method == 'POST':
+        if request.form.get('level'):
+            level = request.form['level']
+        if request.form.get('action_type'):
+            action = request.form['action_type']
+        file = request.files.get('file')
+        level_code = request.form.get('level_code')
+        if file:
+            filepath = f"static/images/characters/{type}/{level}/{level_code}-{action}.png"
+            print(filepath)
+            file.save(filepath)
+
+    character = db.session.query(
+                            Character.type,
+                            Character.classes,
+                            Character.action_type,
+                            func.min(func.date(Character.register)).label('first_registered'),
+                            func.max(func.date(Character.update)).label('last_update')
+                            ).filter_by(type = type, classes=level, action_type=action).group_by(Character.classes).one()
+    kid_count = db.session.query(func.count(Character.type)).filter_by(type=type, classes='kid', action_type=action).scalar()
+    adult_count = db.session.query(func.count(Character.type)).filter_by(type=type, classes='adult', action_type=action).scalar()
+    
+    if level == 'kid':
+        count = kid_count
+    else:
+        count = adult_count
+
+    list = Character.query.filter_by(type = type, classes=level, action_type=action).all()
+
+    return render_template('character_register.html', character=character, count=count, list=list)
 
 @main_bp.route('/character/level_up', methods=['POST'])
 def level_up_character():
